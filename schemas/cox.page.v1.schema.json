@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cox.page.v1",
+  "title": "COX Page Spec",
+  "type": "object",
+  "required": [
+    "CoxVersion",
+    "FileType",
+    "PageName",
+    "Slug",
+    "Schema",
+    "ProjectName",
+    "EvidenceSummary",
+    "VisibleStructure",
+    "Interactions",
+    "NamingDecision",
+    "Layout",
+    "Children",
+    "RecursiveDecompositionDecision"
+  ],
+  "properties": {
+    "CoxVersion": {
+      "const": "1.0"
+    },
+    "FileType": {
+      "const": "page_spec"
+    },
+    "PageName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+    },
+    "Schema": {
+      "const": "cox.page.v1"
+    },
+    "ProjectName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "PageType": {
+      "type": "string"
+    },
+    "EvidenceSummary": {
+      "$ref": "#/$defs/evidenceSummary"
+    },
+    "VisibleStructure": {
+      "type": "object"
+    },
+    "Interactions": {
+      "$ref": "#/$defs/interactionSummary"
+    },
+    "NamingDecision": {
+      "$ref": "#/$defs/namingDecision"
+    },
+    "Layout": {
+      "type": "object",
+      "required": [
+        "Desktop",
+        "Tablet",
+        "Mobile"
+      ],
+      "properties": {
+        "Desktop": {
+          "type": "string"
+        },
+        "Tablet": {
+          "type": "string"
+        },
+        "Mobile": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Children": {
+      "type": "object",
+      "properties": {
+        "Components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "Slug",
+              "Folder",
+              "Role"
+            ],
+            "properties": {
+              "Slug": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+              },
+              "Folder": {
+                "type": "string"
+              },
+              "Role": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "RecursiveDecompositionDecision": {
+      "type": "object",
+      "required": [
+        "Complexity",
+        "Reason",
+        "Action"
+      ],
+      "properties": {
+        "Complexity": {
+          "type": "string"
+        },
+        "Reason": {
+          "type": "string"
+        },
+        "Action": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "evidenceSummary": {
+      "type": "object",
+      "properties": {
+        "Visible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "UserSpecified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Inferred": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Intended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Recommended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "interactionSummary": {
+      "type": "object",
+      "properties": {
+        "Visible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Inferred": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Intended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Recommended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "namingDecision": {
+      "type": "object",
+      "required": [
+        "ChosenName",
+        "Reason",
+        "RejectedAlternatives",
+        "AmbiguityRisk",
+        "EvidenceLevel"
+      ],
+      "properties": {
+        "ChosenName": {
+          "type": "string"
+        },
+        "Reason": {
+          "type": "string"
+        },
+        "RejectedAlternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "AmbiguityRisk": {
+          "type": "string"
+        },
+        "EvidenceLevel": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

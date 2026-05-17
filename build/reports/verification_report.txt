@@ -1,0 +1,14 @@
+CompiledVerificationReport:
+  CoxVersion: "1.0"
+  ProjectRoot: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package"
+  Manifest: "manifest.cox"
+  ValidatedDocuments: 17
+  NormalizedOutputRoot: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/normalized"
+  CompiledManifest: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/manifest.compiled.json"
+  ReferencedPathsChecked: 38
+  Warnings:
+    - "none"
+  Outputs:
+    VerificationReport: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/reports/verification_report.txt"
+    ManifestCompiledJson: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/manifest.compiled.json"
+    NormalizedDirectory: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/normalized"

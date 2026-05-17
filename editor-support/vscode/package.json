@@ -1,0 +1,35 @@
+{
+  "name": "cox-language-support",
+  "displayName": "COX Language Support",
+  "description": "Syntax highlighting and language configuration for COX files.",
+  "version": "1.0.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "cox",
+        "aliases": [
+          "COX",
+          "cox"
+        ],
+        "extensions": [
+          ".cox"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cox",
+        "scopeName": "source.cox",
+        "path": "./syntaxes/cox.tmLanguage.json"
+      }
+    ]
+  }
+}

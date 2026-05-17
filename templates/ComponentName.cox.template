@@ -1,0 +1,33 @@
+CoxVersion: "1.0"
+FileType: "component_spec"
+ComponentName: "{component_slug}"
+Slug: "{component_slug}"
+Schema: "cox.component.v1"
+Role: "{component_role}"
+EvidenceSummary:
+  Visible: []
+  UserSpecified: []
+  Inferred: []
+  Intended: []
+  Recommended: []
+NamingDecision:
+  ChosenName: "{component_slug}"
+  Reason: ""
+  RejectedAlternatives: []
+  AmbiguityRisk: "Low|Medium|High"
+  EvidenceLevel: "Visible|UserSpecified|Inferred"
+VisibleStructure:
+  Regions: []
+VisualStyle:
+  Tokens: []
+Interactions:
+  Visible: []
+  Inferred: []
+  Intended: []
+  Recommended: []
+Responsive:
+  Desktop: ""
+  Tablet: ""
+  Mobile: ""
+ImplementationHints: []
+ChildSubcomponents: []

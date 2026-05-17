@@ -1,0 +1,42 @@
+CoxVersion: "1.0"
+FileType: "protocol_doc"
+Slug: "design_tokens"
+Schema: "cox.protocol.v1"
+ProtocolName: "Design Tokens"
+Purpose: "Reusable visual system tokens shared by all Page and Component .cox files."
+
+Color:
+  BackgroundCanvas: "soft white / misty blue glass canvas"
+  SurfaceGlass: "translucent white surface with subtle blue-gray stroke"
+  SurfaceElevated: "slightly brighter translucent card with soft shadow"
+  PrimaryAccent: "blue-violet gradient"
+  SuccessAccent: "green for running, healthy, positive deltas"
+  WarningAccent: "amber for stopped, paused, degraded states"
+  ErrorAccent: "red for destructive or unavailable states"
+  MutedText: "blue-gray secondary copy"
+  PrimaryText: "near-black high contrast text"
+
+Typography:
+  FontFamily: "native system UI stack"
+  Heading: "bold, compact, high contrast"
+  Body: "medium weight, readable, neutral"
+  Meta: "small, muted, structured"
+
+Shape:
+  CardRadius: "large rounded macOS-style corners"
+  ButtonRadius: "pill or rounded-rect"
+  PanelRadius: "large soft rectangle"
+
+Spacing:
+  PagePadding: "generous desktop spacing, reduced mobile spacing"
+  CardGap: "consistent grid rhythm"
+  InnerPadding: "comfortable card and panel padding"
+
+Motion:
+  General: "smooth native-feeling transitions"
+  CardHover: "subtle lift and shadow increase"
+  Menu: "fade and slight scale"
+  ChartLoad: "fluid line/area animation"
+
+UsageRule:
+  - "Reference tokens by name inside .cox files instead of restating full styles repeatedly."

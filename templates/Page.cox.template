@@ -1,0 +1,36 @@
+CoxVersion: "1.0"
+FileType: "page_spec"
+PageName: "{PageName}"
+Slug: "{page_slug}"
+Schema: "cox.page.v1"
+ProjectName: "{ProjectName}"
+PageType: "{CanonicalPageType}"
+EvidenceSummary:
+  Visible: []
+  UserSpecified: []
+  Inferred: []
+  Intended: []
+  Recommended: []
+VisibleStructure:
+  Regions: []
+NamingDecision:
+  ChosenName: "{PageName}"
+  Reason: "{Reason}"
+  RejectedAlternatives: []
+  AmbiguityRisk: "Low|Medium|High"
+  EvidenceLevel: "Visible|UserSpecified|Inferred"
+Layout:
+  Desktop: ""
+  Tablet: ""
+  Mobile: ""
+Children:
+  Components: []
+Interactions:
+  Visible: []
+  Inferred: []
+  Intended: []
+  Recommended: []
+RecursiveDecompositionDecision:
+  Complexity: "SimplePage|ModeratePage|ComplexPage"
+  Reason: ""
+  Action: ""

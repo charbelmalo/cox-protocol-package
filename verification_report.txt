@@ -1,0 +1,32 @@
+VerificationReport:
+  Package: "cox_protocol_package_corrected.zip"
+  FormatVersion: "COX v1.0"
+  Status: "passed"
+  ExecutedCommands:
+    - "python -m pip install -e ."
+    - "cox validate ."
+    - "cox compile . --out build"
+  AppliedChanges:
+    - "Added COX_FILE_FORMAT_SPECIFICATION_v1.0.md as the formal file format definition."
+    - "Added versioned COX headers and schema identifiers to manifest, protocol, page, and component documents."
+    - "Added JSON Schemas for manifest, page, component, protocol, and crop metadata documents under schemas/."
+    - "Added a Python COX CLI with validate and compile commands and installed it as an editable package entry point."
+    - "Added VS Code language registration scaffolding under editor-support/vscode/."
+    - "Generated normalized JSON outputs and a compiled manifest under build/."
+  Checks:
+    UTF8TextFiles: "passed"
+    ManifestSchemaValidation: "passed"
+    ManifestListedFilesExist: "passed"
+    ScreenshotPlaceholdersHaveMatchingSpecs: "passed"
+    ReferencedPathsChecked: 38
+    ValidatedDocuments: 17
+    NormalizedOutputs: 16
+    VSCodeLanguageSupportFilesPresent: "passed"
+    CompilerRun: "passed"
+  Outputs:
+    CompiledManifest: "build/manifest.compiled.json"
+    NormalizedRoot: "build/normalized"
+    CompilerVerificationReport: "build/reports/verification_report.txt"
+  Notes:
+    - "The repository now treats .cox as a versioned, schema-validated format with MIME type application/vnd.cox+yaml."
+    - "Transient environment or packaging metadata such as .venv, .mypy_cache, and egg-info are not considered part of the curated package listing."

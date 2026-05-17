@@ -1,0 +1,173 @@
+{
+  "compiledWith": "cox 1.0.0",
+  "mimeType": "application/vnd.cox+yaml",
+  "manifest": {
+    "CoxVersion": "1.0",
+    "FileType": "manifest",
+    "Slug": "local_app_manager",
+    "Schema": "cox.manifest.v1",
+    "ProjectName": "LocalAppManager",
+    "PackageName": "cox_protocol_package_corrected.zip",
+    "ProtocolExtension": ".cox",
+    "MimeType": "application/vnd.cox+yaml",
+    "Encoding": "UTF-8",
+    "SyntaxBase": "YAML-compatible structured text",
+    "EntryPoint": "manifest.cox",
+    "ReferenceDocs": [
+      "README.md",
+      "COX_FILE_FORMAT_SPECIFICATION_v1.0.md",
+      "verification_report.txt",
+      "zip_content_listing.txt"
+    ],
+    "ProtocolDocs": [
+      "llm_agent_zip_recreation_instructions.cox",
+      "deterministic_naming_convention.cox",
+      "recursive_decomposition_protocol.cox",
+      "screenshot_partitioning_protocol.cox",
+      "evidence_and_uncertainty_protocol.cox",
+      "sub_agents_orchestration.cox",
+      "design_tokens.cox",
+      "component_binding_graph.cox",
+      "website_logic_and_functionality.cox",
+      "coding_agent_starting_point.cox",
+      "visual_acceptance_checklist.cox"
+    ],
+    "Schemas": [
+      "schemas/cox.manifest.v1.schema.json",
+      "schemas/cox.page.v1.schema.json",
+      "schemas/cox.component.v1.schema.json",
+      "schemas/cox.protocol.v1.schema.json",
+      "schemas/cox.crop_metadata.v1.schema.json"
+    ],
+    "ToolingFiles": [
+      "pyproject.toml",
+      "requirements.txt",
+      "tools/__init__.py",
+      "tools/cox_cli.py",
+      "tools/cox_lib.py",
+      "editor-support/vscode/package.json",
+      "editor-support/vscode/language-configuration.json",
+      "editor-support/vscode/syntaxes/cox.tmLanguage.json"
+    ],
+    "Pages": [
+      {
+        "PageName": "Dashboard",
+        "Slug": "dashboard",
+        "Folder": "LocalAppManager/Dashboard",
+        "PageInstruction": "LocalAppManager/Dashboard/dashboard.cox",
+        "PageScreenshotPlaceholder": "LocalAppManager/Dashboard/dashboard_screenshot.placeholder.txt",
+        "Components": [
+          {
+            "Slug": "left_navigation_sidebar",
+            "Folder": "LocalAppManager/Dashboard/left_navigation_sidebar",
+            "ComponentInstruction": "LocalAppManager/Dashboard/left_navigation_sidebar/left_navigation_sidebar.cox",
+            "ComponentScreenshotPlaceholder": "LocalAppManager/Dashboard/left_navigation_sidebar/left_navigation_sidebar_screenshot.placeholder.txt"
+          },
+          {
+            "Slug": "top_header_stats_bar",
+            "Folder": "LocalAppManager/Dashboard/top_header_stats_bar",
+            "ComponentInstruction": "LocalAppManager/Dashboard/top_header_stats_bar/top_header_stats_bar.cox",
+            "ComponentScreenshotPlaceholder": "LocalAppManager/Dashboard/top_header_stats_bar/top_header_stats_bar_screenshot.placeholder.txt"
+          },
+          {
+            "Slug": "projects_grid_cards",
+            "Folder": "LocalAppManager/Dashboard/projects_grid_cards",
+            "ComponentInstruction": "LocalAppManager/Dashboard/projects_grid_cards/projects_grid_cards.cox",
+            "ComponentScreenshotPlaceholder": "LocalAppManager/Dashboard/projects_grid_cards/projects_grid_cards_screenshot.placeholder.txt"
+          },
+          {
+            "Slug": "analytics_sidebar_panels",
+            "Folder": "LocalAppManager/Dashboard/analytics_sidebar_panels",
+            "ComponentInstruction": "LocalAppManager/Dashboard/analytics_sidebar_panels/analytics_sidebar_panels.cox",
+            "ComponentScreenshotPlaceholder": "LocalAppManager/Dashboard/analytics_sidebar_panels/analytics_sidebar_panels_screenshot.placeholder.txt"
+          }
+        ]
+      }
+    ],
+    "BuildTargets": [
+      "json",
+      "package"
+    ],
+    "VerificationRules": [
+      "Zip must contain this manifest.",
+      "Every manifest-listed .cox file must exist on disk before compilation.",
+      "Screenshots may be placeholders in this protocol package because no real screenshots were supplied in the request.",
+      "When real screenshots are supplied, placeholders must be replaced by actual image files.",
+      "Validation must parse YAML, apply JSON Schema, and check referenced paths."
+    ]
+  },
+  "resolvedFiles": {
+    "referenceDocs": [
+      "README.md",
+      "COX_FILE_FORMAT_SPECIFICATION_v1.0.md",
+      "verification_report.txt",
+      "zip_content_listing.txt"
+    ],
+    "protocolDocs": [
+      "llm_agent_zip_recreation_instructions.cox",
+      "deterministic_naming_convention.cox",
+      "recursive_decomposition_protocol.cox",
+      "screenshot_partitioning_protocol.cox",
+      "evidence_and_uncertainty_protocol.cox",
+      "sub_agents_orchestration.cox",
+      "design_tokens.cox",
+      "component_binding_graph.cox",
+      "website_logic_and_functionality.cox",
+      "coding_agent_starting_point.cox",
+      "visual_acceptance_checklist.cox"
+    ],
+    "schemaFiles": [
+      "schemas/cox.manifest.v1.schema.json",
+      "schemas/cox.page.v1.schema.json",
+      "schemas/cox.component.v1.schema.json",
+      "schemas/cox.protocol.v1.schema.json",
+      "schemas/cox.crop_metadata.v1.schema.json"
+    ],
+    "toolingFiles": [
+      "pyproject.toml",
+      "requirements.txt",
+      "tools/__init__.py",
+      "tools/cox_cli.py",
+      "tools/cox_lib.py",
+      "editor-support/vscode/package.json",
+      "editor-support/vscode/language-configuration.json",
+      "editor-support/vscode/syntaxes/cox.tmLanguage.json"
+    ],
+    "pages": [
+      {
+        "pageName": "Dashboard",
+        "slug": "dashboard",
+        "folder": "LocalAppManager/Dashboard",
+        "instruction": "LocalAppManager/Dashboard/dashboard.cox",
+        "screenshot": "LocalAppManager/Dashboard/dashboard_screenshot.placeholder.txt",
+        "components": [
+          {
+            "slug": "left_navigation_sidebar",
+            "folder": "LocalAppManager/Dashboard/left_navigation_sidebar",
+            "instruction": "LocalAppManager/Dashboard/left_navigation_sidebar/left_navigation_sidebar.cox",
+            "screenshot": "LocalAppManager/Dashboard/left_navigation_sidebar/left_navigation_sidebar_screenshot.placeholder.txt"
+          },
+          {
+            "slug": "top_header_stats_bar",
+            "folder": "LocalAppManager/Dashboard/top_header_stats_bar",
+            "instruction": "LocalAppManager/Dashboard/top_header_stats_bar/top_header_stats_bar.cox",
+            "screenshot": "LocalAppManager/Dashboard/top_header_stats_bar/top_header_stats_bar_screenshot.placeholder.txt"
+          },
+          {
+            "slug": "projects_grid_cards",
+            "folder": "LocalAppManager/Dashboard/projects_grid_cards",
+            "instruction": "LocalAppManager/Dashboard/projects_grid_cards/projects_grid_cards.cox",
+            "screenshot": "LocalAppManager/Dashboard/projects_grid_cards/projects_grid_cards_screenshot.placeholder.txt"
+          },
+          {
+            "slug": "analytics_sidebar_panels",
+            "folder": "LocalAppManager/Dashboard/analytics_sidebar_panels",
+            "instruction": "LocalAppManager/Dashboard/analytics_sidebar_panels/analytics_sidebar_panels.cox",
+            "screenshot": "LocalAppManager/Dashboard/analytics_sidebar_panels/analytics_sidebar_panels_screenshot.placeholder.txt"
+          }
+        ]
+      }
+    ]
+  },
+  "warnings": []
+}

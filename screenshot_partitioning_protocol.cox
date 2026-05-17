@@ -1,0 +1,64 @@
+CoxVersion: "1.0"
+FileType: "protocol_doc"
+Slug: "screenshot_partitioning_protocol"
+Schema: "cox.protocol.v1"
+ProtocolName: "Screenshot Partitioning Protocol"
+Purpose: "Define how agents estimate section containers, borders, and crops from screenshots."
+
+Inputs:
+  AcceptedFormats: ["png", "jpg", "jpeg", "webp"]
+  MinimumScreenshots: 1
+
+PartitioningRules:
+  - "Always preserve the original full-page screenshot at page level."
+  - "Create component screenshots only when the component boundary is sufficiently clear."
+  - "Use visual section containers, borders, spacing, background changes, alignment, and hierarchy to estimate crop boundaries."
+  - "Include slight padding around crops so shadows, glows, popovers, badges, and floating controls are not clipped."
+  - "If a border is unclear, keep the broader region and mark boundary confidence as Medium or Low."
+  - "Do not crop out contextual labels required to understand the component."
+  - "Do not invent hidden offscreen UI."
+
+BoundaryConfidence:
+  High:
+    Meaning: "Clear visual border, container, or region separation."
+    Action: "Crop component screenshot."
+  Medium:
+    Meaning: "Region is distinguishable by spacing/alignment, but edge is inferred."
+    Action: "Crop with padding and mark EstimatedBoundary."
+  Low:
+    Meaning: "Boundary is ambiguous or overlapping."
+    Action: "Avoid crop or use parent screenshot reference."
+
+CropMetadataRequired:
+  Fields:
+    - "SourceScreenshot"
+    - "OutputScreenshot"
+    - "BoundaryConfidence"
+    - "EstimatedBoundingBox"
+    - "IncludedPaddingReason"
+    - "ExcludedRegions"
+
+EstimatedBoundingBoxFormat:
+  Units: "pixels when known, percentage when exact pixel coordinates are not available"
+  Examples:
+    Pixel: "x:0 y:0 width:280 height:900"
+    Percent: "x:0% y:0% width:22% height:100%"
+
+ResponsiveVariantHandling:
+  PageLevel:
+    Rule: "Desktop, tablet, and mobile variants stay in same Page folder when they represent the same page."
+  ComponentLevel:
+    Rule: "Component variant screenshots stay in the same component folder when they represent the same component."
+  Naming:
+    - "dashboard_screenshot_desktop.png"
+    - "dashboard_screenshot_tablet.png"
+    - "dashboard_screenshot_mobile.png"
+    - "{component_slug}_screenshot_desktop.png"
+    - "{component_slug}_screenshot_mobile.png"
+
+AgenticToolInstruction:
+  RequiredBehavior:
+    - "Use vision models to identify regions before cropping."
+    - "Use image tools to crop only after a region plan is written."
+    - "Verify generated crop files exist on disk."
+    - "Record all crops in manifest.cox."

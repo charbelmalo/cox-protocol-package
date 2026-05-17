@@ -1,0 +1,2 @@
+[console_scripts]
+cox = tools.cox_cli:app

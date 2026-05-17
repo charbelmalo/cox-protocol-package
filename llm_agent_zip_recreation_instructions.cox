@@ -1,0 +1,87 @@
+CoxVersion: "1.0"
+FileType: "protocol_doc"
+Slug: "llm_agent_zip_recreation_instructions"
+Schema: "cox.protocol.v1"
+ProtocolName: "LLM Agent ZIP Recreation Instructions"
+Purpose: "Teach coding/design LLM agents how to recreate complete design-spec ZIP packages from screenshots and requirements."
+Name: "COX deterministic design binding protocol"
+Extension: ".cox"
+OutputArtifact: "single downloadable zip containing screenshots, partitioned screenshots, .cox files, manifests, implementation docs, and validation reports"
+ProjectAgnostic: true
+
+RequiredBehavior:
+  - "Do not assume files were created unless they exist on disk."
+  - "Preserve user-provided visual intent, naming conventions, and project vocabulary."
+  - "Use deterministic folder names, file names, and document structures."
+  - "Use .cox as the canonical design/spec/instruction file extension."
+  - "Mark uncertain behavior as Inferred, Intended, or Recommended."
+  - "Never describe invisible features as certain unless user-specified."
+  - "Use recursive decomposition only when it improves clarity."
+
+CanonicalOutputStructure:
+  ProjectFolder: "{ProjectName}/"
+  PageFolder: "{ProjectName}/{PageName}/"
+  PageInstructionFile: "{ProjectName}/{PageName}/{page_slug}.cox"
+  PageScreenshotFile: "{ProjectName}/{PageName}/{page_slug}_screenshot.{extension}"
+  ComponentFolder: "{ProjectName}/{PageName}/{component_slug}/"
+  ComponentInstructionFile: "{ProjectName}/{PageName}/{component_slug}/{component_slug}.cox"
+  ComponentScreenshotFile: "{ProjectName}/{PageName}/{component_slug}/{component_slug}_screenshot.{extension}"
+  ComplexSubcomponentFolder: "{ProjectName}/{PageName}/{component_slug}/{subcomponent_slug}/"
+  ComplexSubcomponentInstructionFile: "{ProjectName}/{PageName}/{component_slug}/{subcomponent_slug}/{subcomponent_slug}.cox"
+  ComplexSubcomponentScreenshotFile: "{ProjectName}/{PageName}/{component_slug}/{subcomponent_slug}/{subcomponent_slug}_screenshot.{extension}"
+
+RootPackageDocs:
+  - "README.md"
+  - "llm_agent_zip_recreation_instructions.cox"
+  - "deterministic_naming_convention.cox"
+  - "recursive_decomposition_protocol.cox"
+  - "screenshot_partitioning_protocol.cox"
+  - "evidence_and_uncertainty_protocol.cox"
+  - "sub_agents_orchestration.cox"
+  - "design_tokens.cox"
+  - "component_binding_graph.cox"
+  - "website_logic_and_functionality.cox"
+  - "coding_agent_starting_point.cox"
+  - "visual_acceptance_checklist.cox"
+  - "manifest.cox"
+
+Workflow:
+  Step01_CollectInputs:
+    Actions:
+      - "List all screenshots, crops, mockups, visual references, existing zips, and user requirements."
+      - "Open/inspect each image visually."
+      - "Record original file names before renaming."
+  Step02_ConstructHierarchy:
+    Actions:
+      - "Identify ProjectName."
+      - "Identify PageName for each full-screen or page-level screenshot."
+      - "Attach responsive variants at the page level unless they are isolated component variants."
+      - "Map each page screenshot to exactly one Page folder."
+  Step03_RecursiveDecomposition:
+    Actions:
+      - "Keep simple pages as one {page_slug}.cox file."
+      - "Split complex pages into distinguishable component folders."
+      - "Split components into subcomponents only when naming or reasoning becomes ambiguous."
+  Step04_DeterministicNaming:
+    Actions:
+      - "Generate names using the slug resolution ladder."
+      - "Run ambiguity and near-duplicate validation."
+      - "Prefer names that balance differentiation and relation."
+  Step05_PartitionScreenshots:
+    Actions:
+      - "Estimate section boundaries and crop components where possible."
+      - "Use border/region estimation without inventing hidden layout."
+      - "Preserve original full-page screenshot at page level."
+  Step06_WriteCoxFiles:
+    Actions:
+      - "Create {page_slug}.cox for every page folder."
+      - "Create component_slug.cox for every component folder."
+      - "Create subcomponent_slug.cox only for complex subcomponent folders."
+  Step07_GenerateGlobalDocs:
+    Actions:
+      - "Write manifest, design tokens, component graph, logic doc, coding-agent doc, and acceptance checklist."
+  Step08_VerifyAndZip:
+    Actions:
+      - "Verify every referenced file exists on disk."
+      - "List zip contents after compression."
+      - "Do not claim completion unless the zip exists and contains expected files."

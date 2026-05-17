@@ -1,0 +1,159 @@
+CoxVersion: "1.0"
+FileType: "protocol_doc"
+Slug: "deterministic_naming_convention"
+Schema: "cox.protocol.v1"
+ProtocolName: "Deterministic Naming Convention"
+Purpose: "Resolve visual-to-spec naming ambiguity using a stable recursive naming formula."
+AppliesTo:
+  - "ProjectName"
+  - "PageName"
+  - "ComponentName"
+  - "ComplexSubcomponentName"
+  - "Screenshot file names"
+  - ".cox file names"
+
+GlobalRules:
+  ProjectName:
+    Format: "PascalCase"
+    Example: "LocalAppManager"
+    SourcePriority:
+      - "User-provided project name"
+      - "Visible product/app title"
+      - "Conversation-derived product purpose"
+      - "Fallback: Project"
+  PageName:
+    Format: "PascalCase"
+    Example: "Dashboard"
+    SourcePriority:
+      - "Visible page title"
+      - "User-provided page name"
+      - "Dominant route or workflow name"
+      - "Canonical page taxonomy"
+      - "Fallback: Page01, Page02"
+  ComponentName:
+    Format: "lowercase_snake_case"
+    Example: "projects_grid_cards"
+  ComplexSubcomponentName:
+    Format: "lowercase_snake_case"
+    Example: "project_card_preview_stage"
+  ForbiddenFinalNamePatterns:
+    - "screenshot_001"
+    - "image_1"
+    - "screen_final"
+    - "capture_date_time"
+    - "temp"
+    - "copy"
+    - "untitled"
+
+SlugResolutionOrder:
+  - Step: 1
+    Rule: "Use explicit user-provided semantic name if supplied."
+  - Step: 2
+    Rule: "Use visible title/header text if it clearly identifies the section."
+  - Step: 3
+    Rule: "Use dominant UI region role."
+  - Step: 4
+    Rule: "Use component type plus primary content domain."
+  - Step: 5
+    Rule: "Use canonical taxonomy."
+  - Step: 6
+    Rule: "Add a short differentiator if two names are too close."
+  - Step: 7
+    Rule: "Append numeric suffix only for true same-role siblings after semantic differentiation fails."
+
+ComponentNameFormula:
+  PreferredPattern: "{domain_or_purpose}_{layout_or_component_type}_{optional_distinguishing_trait}"
+  MinimalExamples:
+    - "left_navigation_sidebar"
+    - "top_header_stats_bar"
+    - "projects_grid_cards"
+    - "analytics_sidebar_panels"
+    - "runtime_status_toolbar"
+    - "project_card_preview_stage"
+  AvoidOverSpecificExamples:
+    Bad: "nested_sidebar"
+    Reason: "Too open to interpretation."
+    Better: "left_navigation_sidebar"
+  AvoidNearDuplicateExamples:
+    BadPair: ["left_sidebar", "left_navigation"]
+    Reason: "Too close; both may refer to same visual region."
+    BetterPair: ["left_navigation_sidebar", "project_filters_sidebar"]
+
+CanonicalComponentTaxonomy:
+  Navigation:
+    - "left_navigation_sidebar"
+    - "top_navigation_bar"
+    - "breadcrumb_trail"
+    - "tab_navigation"
+  Header:
+    - "top_header_bar"
+    - "top_header_stats_bar"
+    - "page_title_toolbar"
+  Content:
+    - "projects_grid_cards"
+    - "detail_content_panel"
+    - "settings_form_panel"
+    - "activity_feed_list"
+  Analytics:
+    - "analytics_sidebar_panels"
+    - "usage_metrics_chart"
+    - "commit_activity_chart"
+  Controls:
+    - "floating_action_button"
+    - "filter_sort_toolbar"
+    - "search_command_input"
+    - "runtime_status_toolbar"
+  Feedback:
+    - "empty_state_panel"
+    - "error_state_banner"
+    - "loading_skeleton_grid"
+    - "confirmation_modal"
+
+AmbiguityValidationPass:
+  Objective: "Ensure names are easy to understand, distinguishable, and recursively stable."
+  Checks:
+    - NameIsSemantic: "Name describes purpose or visible role, not crop position alone."
+    - NameIsNotTooGeneric: "Avoid component, section, panel, area unless qualified."
+    - NameIsNotTooSpecific: "Avoid long descriptions that hide the concept."
+    - NameIsNotNearDuplicate: "Reject sibling names that differ only by vague synonyms."
+    - NameHasStableScope: "Name still makes sense if the screenshot is reused later."
+  NearDuplicateResolution:
+    - "Compare sibling slugs inside the same page folder."
+    - "If two names share same head noun and unclear differentiator, rename one using purpose/domain."
+    - "Prefer relation-preserving pairs: navigation sidebar vs filters sidebar, not sidebar_a vs sidebar_b."
+
+RecursiveNamingPattern:
+  PageLevel:
+    Folder: "{ProjectName}/{PageName}/"
+    Instruction: "{page_slug}.cox"
+    Screenshot: "{page_slug}_screenshot.{ext}"
+  ComponentLevel:
+    Folder: "{ProjectName}/{PageName}/{component_slug}/"
+    Instruction: "{component_slug}.cox"
+    Screenshot: "{component_slug}_screenshot.{ext}"
+  ComplexSubcomponentLevel:
+    Folder: "{ProjectName}/{PageName}/{component_slug}/{subcomponent_slug}/"
+    Instruction: "{subcomponent_slug}.cox"
+    Screenshot: "{subcomponent_slug}_screenshot.{ext}"
+
+ResponsiveVariantNaming:
+  Rule: "Keep variants attached to the same page or component unless the variant introduces a materially different layout."
+  PageVariantPattern: "{page_slug}_screenshot_{viewport}.{ext}"
+  ComponentVariantPattern: "{component_slug}_screenshot_{viewport}.{ext}"
+  AllowedViewportSuffixes:
+    - "desktop"
+    - "tablet"
+    - "mobile"
+  Examples:
+    - "dashboard_screenshot_desktop.png"
+    - "dashboard_screenshot_mobile.png"
+    - "projects_grid_cards_screenshot_tablet.png"
+
+FinalNamingDecisionRecord:
+  RequiredInEachCoxFile: true
+  Fields:
+    - "ChosenName"
+    - "Reason"
+    - "RejectedAlternatives"
+    - "AmbiguityRisk"
+    - "EvidenceLevel"

@@ -1,0 +1,104 @@
+{
+  "CoxVersion": "1.0",
+  "FileType": "protocol_doc",
+  "Slug": "sub_agents_orchestration",
+  "Schema": "cox.protocol.v1",
+  "ProtocolName": "Sub-Agents Orchestration",
+  "Purpose": "Divide COX package generation into expert sub-agent responsibilities.",
+  "CoordinatorAgent": {
+    "Mission": "Own the full package contract, sequence sub-agents, and ensure final ZIP integrity.",
+    "Inputs": [
+      "UserRequirements",
+      "Screenshots",
+      "ExistingArtifacts"
+    ],
+    "Outputs": [
+      "FinalZip",
+      "manifest.cox",
+      "VerificationReport"
+    ],
+    "MustNot": [
+      "Claim files exist before checking disk."
+    ]
+  },
+  "RequirementsAnalystAgent": {
+    "Mission": "Extract project purpose, pages, platform constraints, style requirements, and explicit user naming preferences.",
+    "Outputs": [
+      "requirements_summary.cox",
+      "ProjectName proposal",
+      "PageName proposals"
+    ]
+  },
+  "VisionInspectorAgent": {
+    "Mission": "Inspect screenshots and identify page type, layout, visual hierarchy, components, responsive variants, and evidence levels.",
+    "Outputs": [
+      "visual_inventory.cox",
+      "page_component_candidates",
+      "boundary_confidence estimates"
+    ]
+  },
+  "NamingArchitectAgent": {
+    "Mission": "Apply deterministic naming convention, reject ambiguous names, and produce final Project/Page/Component/Subcomponent names.",
+    "Outputs": [
+      "naming_decisions.cox",
+      "RejectedAlternatives",
+      "AmbiguityValidationPass"
+    ]
+  },
+  "ScreenshotPartitionAgent": {
+    "Mission": "Create page-level and component-level screenshots using estimated containers and safe padding.",
+    "Outputs": [
+      "cropped component screenshots",
+      "crop_metadata.cox"
+    ],
+    "Constraint": "Only crop when boundary confidence is High or Medium."
+  },
+  "CoxSpecWriterAgent": {
+    "Mission": "Write {page_slug}.cox, component .cox, and complex subcomponent .cox files.",
+    "Outputs": [
+      "{page_slug}.cox",
+      "{component_slug}.cox",
+      "{subcomponent_slug}.cox"
+    ]
+  },
+  "LogicAndImplementationAgent": {
+    "Mission": "Write product logic, data flow, API routes, safe runtime controls, and coding-agent implementation plan.",
+    "Outputs": [
+      "website_logic_and_functionality.cox",
+      "coding_agent_starting_point.cox"
+    ]
+  },
+  "DesignSystemAgent": {
+    "Mission": "Extract reusable visual tokens and component relationships.",
+    "Outputs": [
+      "design_tokens.cox",
+      "component_binding_graph.cox"
+    ]
+  },
+  "ValidationAgent": {
+    "Mission": "Verify naming, evidence levels, file existence, UTF-8 text, screenshot/spec pairs, and zip contents.",
+    "Outputs": [
+      "manifest.cox",
+      "visual_acceptance_checklist.cox",
+      "zip_content_listing.txt"
+    ]
+  },
+  "ExecutionOrder": [
+    "CoordinatorAgent",
+    "RequirementsAnalystAgent",
+    "VisionInspectorAgent",
+    "NamingArchitectAgent",
+    "ScreenshotPartitionAgent",
+    "DesignSystemAgent",
+    "CoxSpecWriterAgent",
+    "LogicAndImplementationAgent",
+    "ValidationAgent",
+    "CoordinatorAgent final zip assembly"
+  ],
+  "EscalationRules": [
+    "If naming ambiguity persists, split component or choose purpose-based name.",
+    "If boundary confidence is Low, do not crop; reference parent screenshot.",
+    "If a feature is not visible, mark as Inferred, Intended, or Recommended.",
+    "If a file is missing, do not include it in manifest as completed."
+  ]
+}

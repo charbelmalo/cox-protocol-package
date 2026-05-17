@@ -1,0 +1,157 @@
+{
+  "CoxVersion": "1.0",
+  "FileType": "protocol_doc",
+  "Slug": "website_logic_and_functionality",
+  "Schema": "cox.protocol.v1",
+  "ProtocolName": "Website Logic And Functionality",
+  "Purpose": "Capture the product logic, state transitions, data model, and safety notes behind the COX sample application.",
+  "ProductPurpose": {
+    "Evidence": "UserSpecified",
+    "Summary": "LocalAppManager helps users browse, monitor, launch, and inspect local projects/apps from a visual dashboard."
+  },
+  "CoreEntities": {
+    "Project": {
+      "Evidence": "Inferred",
+      "Fields": [
+        "id",
+        "name",
+        "path",
+        "status",
+        "port",
+        "tags",
+        "favorite",
+        "lastOpened",
+        "previewImage",
+        "runtimeCommand"
+      ]
+    },
+    "RuntimeStatus": {
+      "Evidence": "UserSpecified",
+      "States": [
+        "running",
+        "stopped",
+        "paused",
+        "unhealthy",
+        "indexing",
+        "missing",
+        "archived"
+      ]
+    },
+    "AIProviderUsage": {
+      "Evidence": "UserSpecified",
+      "MaxProviders": 10,
+      "Fields": [
+        "provider",
+        "requests",
+        "tokens",
+        "cost",
+        "percentage"
+      ]
+    }
+  },
+  "FrontendResponsibilities": {
+    "Evidence": "Inferred",
+    "Items": [
+      "Render project grid/list and page shell.",
+      "Filter, sort, tag, and favorite projects.",
+      "Display runtime status, health, previews, analytics, and empty/error states.",
+      "Send safe runtime commands through backend abstractions."
+    ]
+  },
+  "BackendResponsibilities": {
+    "Evidence": "Inferred",
+    "Items": [
+      "Scan configured local folders for projects.",
+      "Manage safe start/stop/restart operations.",
+      "Track ports, process health, and availability.",
+      "Generate/cache/refresh screenshots and previews.",
+      "Persist project metadata and user preferences."
+    ]
+  },
+  "StateTransitions": {
+    "Evidence": "UserSpecified",
+    "Allowed": {
+      "stopped": [
+        "running",
+        "missing",
+        "archived",
+        "indexing"
+      ],
+      "running": [
+        "paused",
+        "stopped",
+        "unhealthy",
+        "archived"
+      ],
+      "paused": [
+        "running",
+        "stopped"
+      ],
+      "unhealthy": [
+        "running",
+        "stopped",
+        "missing"
+      ],
+      "indexing": [
+        "running",
+        "stopped",
+        "missing"
+      ],
+      "missing": [
+        "indexing",
+        "archived"
+      ],
+      "archived": [
+        "indexing"
+      ]
+    }
+  },
+  "ScreenshotsAndPreviews": {
+    "Evidence": "UserSpecified",
+    "Behavior": {
+      "Generate": "Capture project preview when project is reachable.",
+      "Cache": "Store preview image with project metadata.",
+      "Refresh": "Refresh manually or after detected project activity.",
+      "Failure": "Use empty preview state if capture fails."
+    }
+  },
+  "FilteringSortingTagsFavorites": {
+    "Evidence": "UserSpecified",
+    "Behavior": {
+      "Filters": [
+        "status",
+        "tag",
+        "favorite",
+        "runtime",
+        "recent"
+      ],
+      "Sorting": [
+        "last opened",
+        "name",
+        "status",
+        "activity",
+        "port"
+      ],
+      "Tags": "User-defined labels for grouping projects.",
+      "Favorites": "Pinned/high-priority projects displayed first or filterable."
+    }
+  },
+  "PersistenceModel": {
+    "Evidence": "Inferred",
+    "RecommendedStorage": {
+      "LocalConfig": "project paths, preferences, ignored folders",
+      "LocalDatabase": "project metadata, runtime history, preview paths, AI usage summaries",
+      "CacheFolder": "generated screenshots and thumbnails"
+    }
+  },
+  "SecurityAndPrivacyNotes": {
+    "Evidence": "Recommended",
+    "Notes": [
+      "Avoid destructive file operations without explicit user confirmation.",
+      "Never expose secrets found in project folders.",
+      "Sandbox runtime commands where possible.",
+      "Show clear confirmation before deleting, moving, or overwriting files.",
+      "Treat local paths and usage metrics as private user data."
+    ]
+  }
+}

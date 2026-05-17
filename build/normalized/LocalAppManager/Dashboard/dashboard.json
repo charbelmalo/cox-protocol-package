@@ -1,0 +1,84 @@
+{
+  "CoxVersion": "1.0",
+  "FileType": "page_spec",
+  "PageName": "Dashboard",
+  "Slug": "dashboard",
+  "Schema": "cox.page.v1",
+  "ProjectName": "LocalAppManager",
+  "PageType": "dashboard_overview",
+  "EvidenceSummary": {
+    "Visible": [],
+    "UserSpecified": [
+      "Example directory organization uses LocalAppManager and Dashboard.",
+      "Component examples include projects_grid_cards and left_navigation_sidebar."
+    ],
+    "Inferred": [
+      "Dashboard may include sidebar, header, project grid, and analytics rail."
+    ],
+    "Intended": [],
+    "Recommended": []
+  },
+  "VisibleStructure": {
+    "Regions": [
+      "left_navigation_sidebar",
+      "top_header_stats_bar",
+      "projects_grid_cards",
+      "analytics_sidebar_panels"
+    ]
+  },
+  "NamingDecision": {
+    "ChosenName": "Dashboard",
+    "Reason": "User-provided page name and common page-level role.",
+    "RejectedAlternatives": [
+      "Overview",
+      "Home",
+      "Projects"
+    ],
+    "AmbiguityRisk": "Low",
+    "EvidenceLevel": "UserSpecified"
+  },
+  "Layout": {
+    "Desktop": "App shell with left navigation, top header/stats bar, central projects grid, optional right analytics rail.",
+    "Tablet": "Collapse analytics rail below main content or into tabbed panel.",
+    "Mobile": "Stack header, filters, project cards, and analytics sections vertically."
+  },
+  "Children": {
+    "Components": [
+      {
+        "Slug": "left_navigation_sidebar",
+        "Folder": "left_navigation_sidebar/",
+        "Role": "Navigation and workspace filtering"
+      },
+      {
+        "Slug": "top_header_stats_bar",
+        "Folder": "top_header_stats_bar/",
+        "Role": "Page title, search/actions, KPI summaries"
+      },
+      {
+        "Slug": "projects_grid_cards",
+        "Folder": "projects_grid_cards/",
+        "Role": "Primary project discovery and launch grid"
+      },
+      {
+        "Slug": "analytics_sidebar_panels",
+        "Folder": "analytics_sidebar_panels/",
+        "Role": "Activity, usage, health, and chart summaries"
+      }
+    ]
+  },
+  "Interactions": {
+    "Visible": [],
+    "Inferred": [
+      "Users likely navigate between shell regions, search/filter projects, and inspect analytics summaries."
+    ],
+    "Intended": [],
+    "Recommended": [
+      "Preserve keyboard navigation across dashboard regions and child component focus targets."
+    ]
+  },
+  "RecursiveDecompositionDecision": {
+    "Complexity": "ComplexPage",
+    "Reason": "Dashboard contains multiple distinguishable regions and likely interaction groups.",
+    "Action": "Use dashboard.cox for the page shell and child component .cox files for implementation details."
+  }
+}

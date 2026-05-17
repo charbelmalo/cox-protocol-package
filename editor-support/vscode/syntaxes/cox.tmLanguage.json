@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "COX",
+  "scopeName": "source.cox",
+  "patterns": [
+    {
+      "match": "^(CoxVersion|FileType|Slug|Schema|PageName|ProjectName|ComponentName|ProtocolName|MimeType|Encoding|SyntaxBase|EntryPoint)(?=:\\s)",
+      "name": "keyword.control.cox"
+    },
+    {
+      "include": "source.yaml"
+    }
+  ]
+}

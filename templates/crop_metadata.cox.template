@@ -1,0 +1,15 @@
+CoxVersion: "1.0"
+FileType: "crop_metadata"
+Slug: "{component_slug}_crop_metadata"
+Schema: "cox.crop_metadata.v1"
+SourceScreenshot: "dashboard_screenshot.png"
+OutputScreenshot: "{component_slug}_screenshot.png"
+BoundaryConfidence: "High"
+EstimatedBoundingBox:
+  Unit: "px|percent"
+  X: ""
+  Y: ""
+  Width: ""
+  Height: ""
+IncludedPaddingReason: ""
+ExcludedRegions: []

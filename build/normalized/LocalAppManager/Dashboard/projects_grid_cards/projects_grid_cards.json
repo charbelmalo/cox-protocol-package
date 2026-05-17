@@ -1,0 +1,66 @@
+{
+  "CoxVersion": "1.0",
+  "FileType": "component_spec",
+  "ComponentName": "projects_grid_cards",
+  "Slug": "projects_grid_cards",
+  "Schema": "cox.component.v1",
+  "Role": "Project cards grid for browsing, sorting, and launching local projects",
+  "EvidenceSummary": {
+    "Visible": [],
+    "UserSpecified": [
+      "Component name appears in the approved COX naming examples or derived example structure."
+    ],
+    "Inferred": [
+      "Detailed behavior should be adapted to actual screenshots when supplied."
+    ],
+    "Intended": [],
+    "Recommended": []
+  },
+  "NamingDecision": {
+    "ChosenName": "projects_grid_cards",
+    "Reason": "Clear domain + layout + component type.",
+    "RejectedAlternatives": [
+      "generic_section",
+      "nested_panel",
+      "ambiguous_area"
+    ],
+    "AmbiguityRisk": "Low",
+    "EvidenceLevel": "UserSpecified"
+  },
+  "VisibleStructure": {
+    "Note": "Placeholder until real screenshot crop is supplied.",
+    "ExpectedRegions": [
+      "Container surface",
+      "Primary content group",
+      "Secondary controls or metadata where visible"
+    ]
+  },
+  "VisualStyle": {
+    "Tokens": [
+      "Color.SurfaceGlass",
+      "Shape.CardRadius",
+      "Typography.Body",
+      "Motion.General"
+    ]
+  },
+  "Interactions": {
+    "Visible": [],
+    "Inferred": [
+      "Hover and selected states may be required if controls are interactive."
+    ],
+    "Intended": [],
+    "Recommended": [
+      "Add keyboard-focus states and accessible labels."
+    ]
+  },
+  "Responsive": {
+    "Desktop": "Use page-level placement.",
+    "Tablet": "Compress spacing and preserve hierarchy.",
+    "Mobile": "Stack or collapse only if layout requires it."
+  },
+  "ImplementationHints": [
+    "Implement as reusable component mapped to this exact slug.",
+    "Do not rename without updating component_binding_graph.cox and manifest.cox."
+  ],
+  "ChildSubcomponents": []
+}

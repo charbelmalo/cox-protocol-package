@@ -1,0 +1,96 @@
+CoxVersion: "1.0"
+FileType: "protocol_doc"
+Slug: "recursive_decomposition_protocol"
+Schema: "cox.protocol.v1"
+ProtocolName: "Recursive Decomposition Protocol"
+Purpose: "Decide when to keep a screenshot as one .cox file and when to split into component/subcomponent folders."
+
+Principle:
+  Statement: "Decompose only until each file is clear, named deterministically, and implementation-ready. Do not split for its own sake."
+
+ComplexityLevels:
+  SimplePage:
+    Criteria:
+      - "One dominant purpose"
+      - "One primary form, panel, or content region"
+      - "Few interactive states"
+      - "No major nested component ambiguity"
+    Action: "Create only {page_slug}.cox plus {page_slug}_screenshot."
+    Example: "Minimal sign-in page"
+  ModeratePage:
+    Criteria:
+      - "Two to five distinguishable components"
+      - "Components have clear names and boundaries"
+      - "Interactions are localized"
+    Action: "Create {page_slug}.cox plus component folders."
+  ComplexPage:
+    Criteria:
+      - "More than five components"
+      - "Dense dashboard, analytics, sidebar, grid, toolbar, charts, modals, or nested states"
+      - "Some components require creative implementation reasoning"
+    Action: "Create {page_slug}.cox, component folders, and subcomponent folders only where needed."
+
+DecompositionDecisionTree:
+  - Question: "Can the page be explained accurately in one {page_slug}.cox without becoming long or ambiguous?"
+    Yes: "Do not split."
+    No: "Identify primary components."
+  - Question: "Are component boundaries visually distinguishable?"
+    Yes: "Create component folders."
+    No: "Use {page_slug}.cox with internal regions and mark boundaries as Inferred."
+  - Question: "Would a component name need vague or overly specific wording to be unique?"
+    Yes: "Split or rename using purpose/domain; validate sibling names."
+    No: "Keep component as-is."
+  - Question: "Does the component contain multi-layered visual logic, expandable interactions, nested states, or creative animation?"
+    Yes: "Create ComplexSubcomponentName folders."
+    No: "Keep inside component .cox."
+
+PageCoxResponsibility:
+  Includes:
+    - "Page purpose"
+    - "Global layout grid"
+    - "Component map"
+    - "Responsive variants"
+    - "Page-level interactions"
+    - "Links to child component .cox files"
+  Excludes:
+    - "Deep per-component implementation details when child folder exists"
+
+ComponentCoxResponsibility:
+  Includes:
+    - "Component purpose"
+    - "Visible structure"
+    - "Styling tokens"
+    - "States and interactions"
+    - "Data bindings"
+    - "Implementation hints"
+    - "Links to subcomponent .cox files if present"
+
+ComplexSubcomponentCoxResponsibility:
+  IncludeOnlyWhen:
+    - "Subcomponent needs special creative reasoning"
+    - "Subcomponent has independent motion, states, interactions, data, or security/testing notes"
+    - "Component .cox would otherwise become ambiguous or too long"
+
+OverEngineeringGuardrails:
+  - "Do not create subcomponents for every button, icon, or text label."
+  - "Do not split a simple sign-in page unless user explicitly asks."
+  - "Do not split merely because visual elements exist; split because explanation or implementation benefits."
+  - "Prefer one clear component over many fragile micro-components."
+
+RecursiveFlow:
+  ConstructHierarchyFirst:
+    - "Project"
+    - "Pages"
+    - "Responsive page variants"
+    - "Components"
+    - "Complex subcomponents"
+  ThenWriteFiles:
+    - "Root docs"
+    - "{page_slug}.cox files"
+    - "Component .cox files"
+    - "Subcomponent .cox files"
+  ThenValidate:
+    - "Names"
+    - "Evidence levels"
+    - "File existence"
+    - "Zip contents"
