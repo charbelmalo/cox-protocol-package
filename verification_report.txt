@@ -7,17 +7,21 @@ VerificationReport:
     - "unzip -Z1 llm_agent_zip_skills_bundle.zip"
     - "PYTHONDONTWRITEBYTECODE=1 .venv/bin/cox validate ."
     - "PYTHONDONTWRITEBYTECODE=1 .venv/bin/cox compile . --target json --target react --target package --out build"
-    - "COX_PYTHON=.venv/bin/python node npm/cox-protocol.js validate ."
+    - "COX_PYTHON=.venv/bin/python node bin/cox-protocol.js validate ."
+    - "npm view cox-protocol-package version"
+    - "npm view cox-protocol version"
     - "npm pack --dry-run --json"
     - "cd editor-support/vscode && npm run package"
   AppliedChanges:
     - "Inspected both supplied ZIP files before extraction and found no absolute paths or path traversal entries."
     - "Classified cox_protocol_package_compiled.zip as a legacy snapshot of this package and recorded its intake decision in guides/imported-packages/cox_protocol_package_compiled.md instead of overwriting newer COX v1.0 source files."
     - "Expanded llm_agent_zip_skills_bundle.zip into six skill bundle directories under skills/."
-    - "Added guides/npm-installation.md with NPM installation instructions for another device."
+    - "Added guides/npm-installation.md with NPM installation and public publishing instructions."
     - "Updated manifest.cox GuideDocs and SkillBundles to reference the imported guide and skill content."
     - "Updated package exclusion rules so raw intake ZIPs are not included in generated package surfaces."
-    - "Fixed npm/cox-protocol.js so the NPM wrapper runs from the caller's project directory while loading bundled Python modules via PYTHONPATH."
+    - "Fixed bin/cox-protocol.js so the NPM wrapper runs from the caller's project directory while loading bundled Python modules via PYTHONPATH."
+    - "Moved the public NPM command wrapper to bin/cox-protocol.js and updated package.json bin metadata."
+    - "Checked npm name availability with npm view for cox-protocol-package and cox-protocol; both returned no package version at check time."
     - "Regenerated normalized JSON, React stubs, deterministic package ZIP, package hash manifest, and VSIX output."
   Checks:
     UTF8TextFiles: "passed"
@@ -39,6 +43,7 @@ VerificationReport:
     PackageArchiveEntries: 91
     NpmWrapperSmokeTest: "passed"
     NpmPackDryRun: "passed"
+    NpmNameAvailabilityChecked: "passed"
     VSCodeExtensionPackagePresent: "passed"
     CompilerRun: "passed"
   Outputs:

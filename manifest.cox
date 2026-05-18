@@ -47,7 +47,7 @@ ToolingFiles:
   - ".gitignore"
   - ".npmignore"
   - "package.json"
-  - "npm/cox-protocol.js"
+  - "bin/cox-protocol.js"
   - "pyproject.toml"
   - "requirements.txt"
   - "templates/ComponentName.cox.template"

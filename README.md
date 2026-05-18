@@ -38,7 +38,7 @@ Schema: "cox.component.v1"
 - `skills/`: LLM-agent skill bundles imported from `llm_agent_zip_skills_bundle.zip`
 - `schemas/`: JSON Schemas for manifest, page, component, protocol, and crop metadata documents
 - `tools/`: Python validator/compiler package and CLI
-- `npm/`: NPM wrapper that delegates to the Python COX CLI
+- `bin/`: NPM wrapper that delegates to the Python COX CLI
 - `editor-support/vscode/`: minimal VS Code language registration for `.cox`
 - `LocalAppManager/`: example manifest-driven project content
 - `templates/`: versioned starter templates for page, component, and crop metadata files

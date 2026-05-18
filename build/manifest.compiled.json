@@ -61,7 +61,7 @@
       ".gitignore",
       ".npmignore",
       "package.json",
-      "npm/cox-protocol.js",
+      "bin/cox-protocol.js",
       "pyproject.toml",
       "requirements.txt",
       "templates/ComponentName.cox.template",
@@ -178,7 +178,7 @@
       ".gitignore",
       ".npmignore",
       "package.json",
-      "npm/cox-protocol.js",
+      "bin/cox-protocol.js",
       "pyproject.toml",
       "requirements.txt",
       "templates/ComponentName.cox.template",
@@ -255,7 +255,7 @@
       "archive": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package/cox_protocol_package_corrected.zip",
       "manifest": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package/cox_protocol_package_corrected.manifest.json",
       "file_count": 91,
-      "sha256": "f5177da2b672933b1a94e022fef9c474e828b8425c62919c62845a05713b3ffc"
+      "sha256": "d7578709ea2dfe0a242b030277aff48840bc818a452981c2a88908315950b59f"
     }
   },
   "warnings": []
