@@ -151,7 +151,8 @@ Check the NPM package contents before publishing:
 ```bash
 npm pack --dry-run
 npm pack
-npm install -g ./cox-protocol-package-1.0.0.tgz
+npm install -g ./cox-protocol-package-<version>.tgz
+python3 -m pip install PyYAML jsonschema typer rich
 cox-protocol validate .
 ```
 

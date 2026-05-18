@@ -1,5 +1,5 @@
 {
-  "compiledWith": "cox 1.0.0",
+  "compiledWith": "cox 1.0.1",
   "mimeType": "application/vnd.cox+yaml",
   "targets": [
     "json",
@@ -255,7 +255,7 @@
       "archive": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package/cox_protocol_package_corrected.zip",
       "manifest": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package/cox_protocol_package_corrected.manifest.json",
       "file_count": 91,
-      "sha256": "d7578709ea2dfe0a242b030277aff48840bc818a452981c2a88908315950b59f"
+      "sha256": "24fa717bf1c64cd4d8c0e2bdb45fccad246b83526f4b2bf317cf64dc9e88b194"
     }
   },
   "warnings": []

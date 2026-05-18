@@ -10,6 +10,8 @@ from typing import Any, Sequence
 import yaml  # type: ignore[import-untyped]
 from jsonschema import Draft202012Validator  # type: ignore[import-untyped]
 
+from . import __version__
+
 
 SCHEMA_FILENAMES = {
     "cox.manifest.v1": "cox.manifest.v1.schema.json",
@@ -26,7 +28,7 @@ class CoxError(RuntimeError):
     """Raised when COX validation or compilation fails."""
 
 
-@dataclass(slots=True)
+@dataclass
 class ValidationSummary:
     project_root: Path
     manifest_path: Path
@@ -516,7 +518,7 @@ def compile_project(
         )
 
     manifest_payload = {
-        "compiledWith": "cox 1.0.0",
+        "compiledWith": f"cox {__version__}",
         "mimeType": "application/vnd.cox+yaml",
         "targets": compile_targets,
         "manifest": summary.documents[summary.manifest_path],

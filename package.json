@@ -1,11 +1,11 @@
 {
   "name": "cox-protocol-package",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "NPM wrapper and distribution package for the COX protocol CLI.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "cox-protocol": "./bin/cox-protocol.js"
+    "cox-protocol": "bin/cox-protocol.js"
   },
   "files": [
     "bin",

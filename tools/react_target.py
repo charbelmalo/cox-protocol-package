@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from . import __version__
 
 if TYPE_CHECKING:
     from .cox_lib import ValidationSummary
@@ -257,7 +258,7 @@ def emit_react_stubs(
     write_text(react_root / "index.ts", "\n".join(barrel_lines) + "\n")
 
     manifest_payload = {
-        "generatedWith": "cox 1.0.0",
+        "generatedWith": f"cox {__version__}",
         "target": "react",
         "components": sorted(
             component_records.values(),

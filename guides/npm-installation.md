@@ -4,7 +4,7 @@ This package ships an NPM command named `cox-protocol`. The command delegates to
 
 If the target machine has multiple Python installations, set `COX_PYTHON` to the interpreter that has the COX dependencies installed.
 
-> Note: This NPM package installs the `cox-protocol` command wrapper and the COX package files. The target machine must also have Python 3.10+ and the required Python packages:
+> Note: This NPM package installs the `cox-protocol` command wrapper and the COX package files. The target machine must also have Python 3.9+ and the required Python packages:
 >
 > ```bash
 > python3 -m pip install PyYAML jsonschema typer rich
@@ -19,7 +19,7 @@ If the target machine has multiple Python installations, set `COX_PYTHON` to the
 ## Prerequisites
 
 - Node.js 18 or newer
-- Python 3.10 or newer
+- Python 3.9 or newer
 - `pip` available for the Python interpreter you want COX to use
 - An npm account with two-factor authentication or an appropriate granular publishing token
 
@@ -32,11 +32,11 @@ The publish metadata should include:
 ```json
 {
   "name": "cox-protocol-package",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NPM wrapper and distribution package for the COX protocol CLI.",
   "license": "MIT",
   "bin": {
-    "cox-protocol": "./bin/cox-protocol.js"
+    "cox-protocol": "bin/cox-protocol.js"
   },
   "files": [
     "bin",
@@ -79,7 +79,7 @@ npm view cox-protocol-package
 
 If npm returns package info, the name is already taken. If it returns a 404, the name can be used.
 
-As of the last local check for this package, both `cox-protocol-package` and `cox-protocol` returned no package version from `npm view`, so either name appeared available. Recheck immediately before publishing because npm names can be claimed at any time.
+For this repository, `cox-protocol-package` is already in use. That is expected once the package has been published. For updates, keep the name and publish a new version.
 
 A shorter public name may be better if it is available:
 
@@ -124,7 +124,7 @@ Then create and inspect the actual tarball:
 
 ```bash
 npm pack
-tar -tzf cox-protocol-package-1.0.0.tgz
+tar -tzf cox-protocol-package-<version>.tgz
 ```
 
 Confirm the tarball includes:
@@ -150,7 +150,7 @@ Confirm it does not include:
 From another temporary folder:
 
 ```bash
-npm install -g /path/to/cox-protocol-package-1.0.0.tgz
+npm install -g /path/to/cox-protocol-package-<version>.tgz
 python3 -m pip install PyYAML jsonschema typer rich
 cox-protocol --help
 ```
@@ -223,10 +223,10 @@ On the development machine, create the tarball:
 npm pack
 ```
 
-Copy `cox-protocol-package-1.0.0.tgz` to the other device, then install it there:
+Copy `cox-protocol-package-<version>.tgz` to the other device, then install it there:
 
 ```bash
-npm install -g ./cox-protocol-package-1.0.0.tgz
+npm install -g ./cox-protocol-package-<version>.tgz
 python3 -m pip install PyYAML jsonschema typer rich
 ```
 
@@ -284,7 +284,7 @@ npm login
 npm whoami
 npm pack --dry-run
 npm pack
-npm install -g ./cox-protocol-package-1.0.0.tgz
+npm install -g ./cox-protocol-package-<version>.tgz
 python3 -m pip install PyYAML jsonschema typer rich
 cox-protocol --help
 npm publish

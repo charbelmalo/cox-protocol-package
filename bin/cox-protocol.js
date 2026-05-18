@@ -14,6 +14,40 @@ const pythonEnv = {
   PYTHONPATH: pythonPath,
 };
 
+const versionCheck = spawnSync(
+  python,
+  [
+    "-c",
+    "import sys; print('.'.join(map(str, sys.version_info[:3]))); raise SystemExit(0 if sys.version_info >= (3, 9) else 1)",
+  ],
+  {
+    cwd: process.cwd(),
+    env: pythonEnv,
+    stdio: "pipe",
+  },
+);
+
+if (versionCheck.error) {
+  console.error(
+    `Unable to run the configured Python interpreter ${python}: ${versionCheck.error.message}`,
+  );
+  console.error(
+    "Install Python 3.9 or newer, or set COX_PYTHON to a working interpreter.",
+  );
+  process.exit(1);
+}
+
+if (versionCheck.status !== 0) {
+  const detectedVersion = versionCheck.stdout.toString().trim() || "unknown";
+  console.error(
+    `COX requires Python 3.9 or newer, but ${python} resolved to ${detectedVersion}.`,
+  );
+  console.error(
+    "Install Python 3.9+ or point COX_PYTHON at a supported interpreter.",
+  );
+  process.exit(versionCheck.status ?? 1);
+}
+
 const dependencyCheck = spawnSync(
   python,
   ["-c", "import typer, yaml, jsonschema, rich"],
@@ -23,6 +57,16 @@ const dependencyCheck = spawnSync(
     stdio: "pipe",
   },
 );
+
+if (dependencyCheck.error) {
+  console.error(
+    `Unable to run the configured Python interpreter ${python}: ${dependencyCheck.error.message}`,
+  );
+  console.error(
+    "Install Python 3.9+ or point COX_PYTHON at a working interpreter.",
+  );
+  process.exit(1);
+}
 
 if (dependencyCheck.status !== 0) {
   console.error(

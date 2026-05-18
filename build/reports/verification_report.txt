@@ -30,4 +30,4 @@ CompiledVerificationReport:
       Archive: "build/package/cox_protocol_package_corrected.zip"
       Manifest: "build/package/cox_protocol_package_corrected.manifest.json"
       FileCount: 91
-      Sha256: "d7578709ea2dfe0a242b030277aff48840bc818a452981c2a88908315950b59f"
+      Sha256: "24fa717bf1c64cd4d8c0e2bdb45fccad246b83526f4b2bf317cf64dc9e88b194"

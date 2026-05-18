@@ -6,6 +6,7 @@ import zipfile
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterable
 
+from . import __version__
 from .cox_lib import relative_path
 
 
@@ -162,7 +163,7 @@ def emit_package_archive(
         )
 
     package_manifest = {
-        "generatedWith": "cox 1.0.0",
+        "generatedWith": f"cox {__version__}",
         "deterministic": True,
         "archiveRoot": archive_root,
         "projectName": summary.documents[summary.manifest_path].get(
