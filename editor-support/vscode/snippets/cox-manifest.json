@@ -1,0 +1,39 @@
+{
+  "COX Manifest": {
+    "prefix": "cox-manifest",
+    "body": [
+      "CoxVersion: \"1.0\"",
+      "FileType: \"manifest\"",
+      "Slug: \"${1:project_slug}\"",
+      "Schema: \"cox.manifest.v1\"",
+      "ProjectName: \"${2:ProjectName}\"",
+      "PackageName: \"${3:project.zip}\"",
+      "ProtocolExtension: \".cox\"",
+      "MimeType: \"application/vnd.cox+yaml\"",
+      "Encoding: \"UTF-8\"",
+      "SyntaxBase: \"YAML-compatible structured text\"",
+      "EntryPoint: \"manifest.cox\"",
+      "ReferenceDocs:",
+      "  - \"README.md\"",
+      "ProtocolDocs:",
+      "  - \"${4:protocols/example_protocol.cox}\"",
+      "Schemas:",
+      "  - \"schemas/cox.manifest.v1.schema.json\"",
+      "ToolingFiles:",
+      "  - \"tools/cox_cli.py\"",
+      "Pages:",
+      "  - PageName: \"${5:Dashboard}\"",
+      "    Slug: \"${6:dashboard}\"",
+      "    Folder: \"${7:LocalAppManager/Dashboard}\"",
+      "    PageInstruction: \"${8:LocalAppManager/Dashboard/dashboard.cox}\"",
+      "    PageScreenshotPlaceholder: \"${9:LocalAppManager/Dashboard/dashboard_screenshot.placeholder.txt}\"",
+      "    Components: []",
+      "BuildTargets:",
+      "  - \"json\"",
+      "  - \"react\"",
+      "VerificationRules:",
+      "  - \"${10:Validation must parse YAML, apply JSON Schema, and check referenced paths.}\""
+    ],
+    "description": "Insert a COX manifest skeleton"
+  }
+}

@@ -56,7 +56,19 @@
         "type": "string"
       }
     },
+    "GuideDocs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "ProtocolDocs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "SkillBundles": {
       "type": "array",
       "items": {
         "type": "string"
@@ -138,8 +150,15 @@
     },
     "BuildTargets": {
       "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "json",
+          "react",
+          "package"
+        ]
       }
     },
     "VerificationRules": {

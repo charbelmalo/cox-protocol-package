@@ -64,22 +64,22 @@
   "LogicAndImplementationAgent": {
     "Mission": "Write product logic, data flow, API routes, safe runtime controls, and coding-agent implementation plan.",
     "Outputs": [
-      "website_logic_and_functionality.cox",
-      "coding_agent_starting_point.cox"
+      "protocols/website_logic_and_functionality.cox",
+      "protocols/coding_agent_starting_point.cox"
     ]
   },
   "DesignSystemAgent": {
     "Mission": "Extract reusable visual tokens and component relationships.",
     "Outputs": [
-      "design_tokens.cox",
-      "component_binding_graph.cox"
+      "protocols/design_tokens.cox",
+      "protocols/component_binding_graph.cox"
     ]
   },
   "ValidationAgent": {
     "Mission": "Verify naming, evidence levels, file existence, UTF-8 text, screenshot/spec pairs, and zip contents.",
     "Outputs": [
       "manifest.cox",
-      "visual_acceptance_checklist.cox",
+      "protocols/visual_acceptance_checklist.cox",
       "zip_content_listing.txt"
     ]
   },

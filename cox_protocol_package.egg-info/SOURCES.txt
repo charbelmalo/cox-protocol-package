@@ -1,3 +1,4 @@
+LICENSE
 README.md
 pyproject.toml
 cox_protocol_package.egg-info/PKG-INFO
@@ -9,3 +10,5 @@ cox_protocol_package.egg-info/top_level.txt
 tools/__init__.py
 tools/cox_cli.py
 tools/cox_lib.py
+tools/package_target.py
+tools/react_target.py

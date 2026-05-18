@@ -1,0 +1,23 @@
+{
+  "COX Crop Metadata": {
+    "prefix": "cox-crop",
+    "body": [
+      "CoxVersion: \"1.0\"",
+      "FileType: \"crop_metadata\"",
+      "Slug: \"${1:component_crop_metadata}\"",
+      "Schema: \"cox.crop_metadata.v1\"",
+      "SourceScreenshot: \"${2:dashboard_screenshot.png}\"",
+      "OutputScreenshot: \"${3:component_screenshot.png}\"",
+      "BoundaryConfidence: \"${4|High,Medium,Low|}\"",
+      "EstimatedBoundingBox:",
+      "  Unit: \"${5|px,percent|}\"",
+      "  X: \"\"",
+      "  Y: \"\"",
+      "  Width: \"\"",
+      "  Height: \"\"",
+      "IncludedPaddingReason: \"${6:Preserve visible shadow and edge spacing}\"",
+      "ExcludedRegions: []"
+    ],
+    "description": "Insert a COX crop metadata skeleton"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "COX Component Spec": {
+    "prefix": "cox-component",
+    "body": [
+      "CoxVersion: \"1.0\"",
+      "FileType: \"component_spec\"",
+      "ComponentName: \"${1:projects_grid_cards}\"",
+      "Slug: \"${1:projects_grid_cards}\"",
+      "Schema: \"cox.component.v1\"",
+      "Role: \"${2:Describe the component role}\"",
+      "EvidenceSummary:",
+      "  Visible: []",
+      "  UserSpecified: []",
+      "  Inferred: []",
+      "  Intended: []",
+      "  Recommended: []",
+      "NamingDecision:",
+      "  ChosenName: \"${1:projects_grid_cards}\"",
+      "  Reason: \"${3:Reason for the component name}\"",
+      "  RejectedAlternatives: []",
+      "  AmbiguityRisk: \"Low\"",
+      "  EvidenceLevel: \"UserSpecified\"",
+      "VisibleStructure:",
+      "  Regions: []",
+      "VisualStyle:",
+      "  Tokens: []",
+      "Interactions:",
+      "  Visible: []",
+      "  Inferred: []",
+      "  Intended: []",
+      "  Recommended: []",
+      "Responsive:",
+      "  Desktop: \"\"",
+      "  Tablet: \"\"",
+      "  Mobile: \"\"",
+      "ImplementationHints: []",
+      "ChildSubcomponents: []"
+    ],
+    "description": "Insert a COX component specification skeleton"
+  }
+}

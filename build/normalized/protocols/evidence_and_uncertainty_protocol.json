@@ -28,7 +28,7 @@
     }
   },
   "RequiredUse": [
-    "Every behavior in website_logic_and_functionality.cox must include an evidence level.",
+    "Every behavior in protocols/website_logic_and_functionality.cox must include an evidence level.",
     "Every component .cox must include EvidenceSummary, VisibleStructure, and Interactions, with visible, inferred, intended, and recommended behavior clearly labeled inside those sections.",
     "Security, persistence, runtime controls, analytics, and AI-provider metrics must not be marked Visible unless actually shown."
   ],

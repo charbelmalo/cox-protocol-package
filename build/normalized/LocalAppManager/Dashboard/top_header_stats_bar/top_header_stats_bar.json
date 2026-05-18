@@ -60,7 +60,7 @@
   },
   "ImplementationHints": [
     "Implement as reusable component mapped to this exact slug.",
-    "Do not rename without updating component_binding_graph.cox and manifest.cox."
+    "Do not rename without updating protocols/component_binding_graph.cox and manifest.cox."
   ],
   "ChildSubcomponents": []
 }

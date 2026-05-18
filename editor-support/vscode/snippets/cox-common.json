@@ -1,0 +1,12 @@
+{
+  "COX Header": {
+    "prefix": "cox-header",
+    "body": [
+      "CoxVersion: \"1.0\"",
+      "FileType: \"${1|manifest,page_spec,component_spec,protocol_doc,crop_metadata|}\"",
+      "Slug: \"${2:my_slug}\"",
+      "Schema: \"${3|cox.manifest.v1,cox.page.v1,cox.component.v1,cox.protocol.v1,cox.crop_metadata.v1|}\""
+    ],
+    "description": "Insert the common COX v1.0 document header"
+  }
+}

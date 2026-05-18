@@ -73,10 +73,16 @@ def compile_command(
         "-o",
         resolve_path=False,
     ),
+    targets: list[str] = typer.Option(
+        [],
+        "--target",
+        "-t",
+        help="Compilation target(s) to emit. Repeat the flag or use commas.",
+    ),
 ) -> None:
     """Validate the project and emit normalized JSON outputs."""
     try:
-        result = compile_project(project_path, out_dir)
+        result = compile_project(project_path, out_dir, targets=targets)
     except CoxError as exc:
         console.print(f"[bold red]Compilation failed[/bold red]\n{exc}")
         raise typer.Exit(code=1) from exc
@@ -87,7 +93,29 @@ def compile_command(
     )
     table = Table(show_header=False, box=None)
     table.add_row("Build root", result["build_root"].as_posix())
-    table.add_row("Normalized documents", str(result["normalized_count"]))
+    table.add_row("Targets", ", ".join(result["targets"]))
+    json_result = result["target_results"].get("json")
+    if json_result is not None:
+        table.add_row(
+            "Normalized documents",
+            str(json_result["document_count"]),
+        )
+    react_result = result["target_results"].get("react")
+    if react_result is not None:
+        table.add_row("React pages", str(react_result["page_count"]))
+        table.add_row(
+            "React components",
+            str(react_result["component_count"]),
+        )
+        table.add_row(
+            "React manifest",
+            react_result["manifest"].as_posix(),
+        )
+    package_result = result["target_results"].get("package")
+    if package_result is not None:
+        table.add_row("Package archive", package_result["archive"].as_posix())
+        table.add_row("Package files", str(package_result["file_count"]))
+        table.add_row("Package sha256", package_result["sha256"])
     table.add_row("Compiled manifest", result["compiled_manifest"].as_posix())
     table.add_row("Verification report", result["report"].as_posix())
     console.print(table)

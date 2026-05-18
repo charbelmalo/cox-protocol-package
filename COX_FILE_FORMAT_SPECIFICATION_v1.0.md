@@ -36,7 +36,7 @@ Required header fields for all COX documents:
 
 ### `manifest`
 
-Project entrypoint that defines the package contract, referenced pages, protocol documents, schemas, tooling, and build targets.
+Project entrypoint that defines the package contract, referenced pages, guide documents, protocol documents, skill bundles, schemas, tooling, and build targets.
 
 Required top-level fields:
 
@@ -49,6 +49,21 @@ Required top-level fields:
 - `MimeType`
 - `EntryPoint`
 - `Pages`
+
+Optional manifest file collections:
+
+- `ReferenceDocs`: human-facing root documentation files
+- `GuideDocs`: guide or tutorial files imported into `guides/`
+- `ProtocolDocs`: `.cox` methodology and system protocol documents
+- `SkillBundles`: LLM-agent skill bundle files or directories imported into `skills/`
+- `Schemas`: JSON Schema files used by the validator
+- `ToolingFiles`: compiler, editor, package, and distribution tooling files
+
+Supported build targets:
+
+- `json`
+- `react`
+- `package`
 
 ### `page_spec`
 
@@ -160,7 +175,7 @@ Validation must include:
 
 ## 8. Compilation Model
 
-The first professional compilation target for COX v1.0 is normalized JSON.
+The first professional compilation target for COX v1.0 is normalized JSON. The current compiler also supports React stubs and deterministic package ZIP output.
 
 Expected pipeline:
 
@@ -178,6 +193,8 @@ Recommended commands:
 ```bash
 cox validate ./cox_protocol_package
 cox compile ./cox_protocol_package --out ./build
+cox compile ./cox_protocol_package --target react --out ./build
+cox compile ./cox_protocol_package --target json --target react --target package --out ./build
 ```
 
 Expected build outputs:
@@ -186,9 +203,29 @@ Expected build outputs:
 build/
   manifest.compiled.json
   normalized/
+  package/
+    cox_protocol_package_corrected.zip
+    cox_protocol_package_corrected.manifest.json
   reports/
     verification_report.txt
 ```
+
+Optional React stub output:
+
+```text
+build/
+  react/
+    components/
+    pages/
+    index.ts
+    manifest.react.json
+```
+
+The `react` target consumes the same normalized COX document model used by the JSON target and emits framework-neutral TSX stubs. COX v1.0 does not require the compiler to infer concrete CSS values or executable interaction logic from prose-only layout and evidence sections.
+
+The `package` target emits a deterministic ZIP archive from manifest-referenced source files and any generated outputs produced earlier in the same compilation pass. Package archives must use project-relative paths under a single archive root, sorted file ordering, fixed ZIP timestamps, and SHA-256 records for every packaged file. Local caches, virtual environments, raw intake ZIPs, and package output directories must not be included.
+
+Guide and skill bundle intake is intentionally explicit. The compiler supports `GuideDocs` and `SkillBundles`, but ZIP attachments must be inspected and curated before their paths are added to the manifest.
 
 ## 9. Editor Support
 

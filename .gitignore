@@ -1,0 +1,17 @@
+.DS_Store
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+*.whl
+node_modules/
+npm-debug.log*
+*.tgz
+cox-guides.zip
+cox_protocol_package_compiled.zip
+llm_agent_zip_skills_bundle.zip
+build/package/

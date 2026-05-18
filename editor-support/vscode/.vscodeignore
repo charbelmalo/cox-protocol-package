@@ -1,0 +1,9 @@
+dist/**
+*.vsix
+.DS_Store
+node_modules/**
+*.log
+.github/**
+coverage/**
+**/*.test.ts
+**/*.map

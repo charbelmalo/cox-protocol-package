@@ -1,6 +1,11 @@
 {
   "compiledWith": "cox 1.0.0",
   "mimeType": "application/vnd.cox+yaml",
+  "targets": [
+    "json",
+    "react",
+    "package"
+  ],
   "manifest": {
     "CoxVersion": "1.0",
     "FileType": "manifest",
@@ -19,18 +24,30 @@
       "verification_report.txt",
       "zip_content_listing.txt"
     ],
+    "GuideDocs": [
+      "guides/imported-packages/cox_protocol_package_compiled.md",
+      "guides/npm-installation.md"
+    ],
     "ProtocolDocs": [
-      "llm_agent_zip_recreation_instructions.cox",
-      "deterministic_naming_convention.cox",
-      "recursive_decomposition_protocol.cox",
-      "screenshot_partitioning_protocol.cox",
-      "evidence_and_uncertainty_protocol.cox",
-      "sub_agents_orchestration.cox",
-      "design_tokens.cox",
-      "component_binding_graph.cox",
-      "website_logic_and_functionality.cox",
-      "coding_agent_starting_point.cox",
-      "visual_acceptance_checklist.cox"
+      "protocols/llm_agent_zip_recreation_instructions.cox",
+      "protocols/deterministic_naming_convention.cox",
+      "protocols/recursive_decomposition_protocol.cox",
+      "protocols/screenshot_partitioning_protocol.cox",
+      "protocols/evidence_and_uncertainty_protocol.cox",
+      "protocols/sub_agents_orchestration.cox",
+      "protocols/design_tokens.cox",
+      "protocols/component_binding_graph.cox",
+      "protocols/website_logic_and_functionality.cox",
+      "protocols/coding_agent_starting_point.cox",
+      "protocols/visual_acceptance_checklist.cox"
+    ],
+    "SkillBundles": [
+      "skills/design-spec-writer",
+      "skills/package-docs-writer",
+      "skills/screenshot-semantic-namer",
+      "skills/visual-token-extractor",
+      "skills/zip-design-orchestrator",
+      "skills/zip-packager"
     ],
     "Schemas": [
       "schemas/cox.manifest.v1.schema.json",
@@ -40,14 +57,34 @@
       "schemas/cox.crop_metadata.v1.schema.json"
     ],
     "ToolingFiles": [
+      "LICENSE",
+      ".gitignore",
+      ".npmignore",
+      "package.json",
+      "npm/cox-protocol.js",
       "pyproject.toml",
       "requirements.txt",
+      "templates/ComponentName.cox.template",
+      "templates/Page.cox.template",
+      "templates/crop_metadata.cox.template",
       "tools/__init__.py",
       "tools/cox_cli.py",
       "tools/cox_lib.py",
+      "tools/package_target.py",
+      "tools/react_target.py",
       "editor-support/vscode/package.json",
       "editor-support/vscode/language-configuration.json",
-      "editor-support/vscode/syntaxes/cox.tmLanguage.json"
+      "editor-support/vscode/syntaxes/cox.tmLanguage.json",
+      "editor-support/vscode/.vscodeignore",
+      "editor-support/vscode/LICENSE",
+      "editor-support/vscode/README.md",
+      "editor-support/vscode/CHANGELOG.md",
+      "editor-support/vscode/snippets/cox-common.json",
+      "editor-support/vscode/snippets/cox-manifest.json",
+      "editor-support/vscode/snippets/cox-page.json",
+      "editor-support/vscode/snippets/cox-component.json",
+      "editor-support/vscode/snippets/cox-protocol.json",
+      "editor-support/vscode/snippets/cox-crop-metadata.json"
     ],
     "Pages": [
       {
@@ -86,6 +123,7 @@
     ],
     "BuildTargets": [
       "json",
+      "react",
       "package"
     ],
     "VerificationRules": [
@@ -103,18 +141,30 @@
       "verification_report.txt",
       "zip_content_listing.txt"
     ],
+    "guideDocs": [
+      "guides/imported-packages/cox_protocol_package_compiled.md",
+      "guides/npm-installation.md"
+    ],
     "protocolDocs": [
-      "llm_agent_zip_recreation_instructions.cox",
-      "deterministic_naming_convention.cox",
-      "recursive_decomposition_protocol.cox",
-      "screenshot_partitioning_protocol.cox",
-      "evidence_and_uncertainty_protocol.cox",
-      "sub_agents_orchestration.cox",
-      "design_tokens.cox",
-      "component_binding_graph.cox",
-      "website_logic_and_functionality.cox",
-      "coding_agent_starting_point.cox",
-      "visual_acceptance_checklist.cox"
+      "protocols/llm_agent_zip_recreation_instructions.cox",
+      "protocols/deterministic_naming_convention.cox",
+      "protocols/recursive_decomposition_protocol.cox",
+      "protocols/screenshot_partitioning_protocol.cox",
+      "protocols/evidence_and_uncertainty_protocol.cox",
+      "protocols/sub_agents_orchestration.cox",
+      "protocols/design_tokens.cox",
+      "protocols/component_binding_graph.cox",
+      "protocols/website_logic_and_functionality.cox",
+      "protocols/coding_agent_starting_point.cox",
+      "protocols/visual_acceptance_checklist.cox"
+    ],
+    "skillBundles": [
+      "skills/design-spec-writer",
+      "skills/package-docs-writer",
+      "skills/screenshot-semantic-namer",
+      "skills/visual-token-extractor",
+      "skills/zip-design-orchestrator",
+      "skills/zip-packager"
     ],
     "schemaFiles": [
       "schemas/cox.manifest.v1.schema.json",
@@ -124,14 +174,34 @@
       "schemas/cox.crop_metadata.v1.schema.json"
     ],
     "toolingFiles": [
+      "LICENSE",
+      ".gitignore",
+      ".npmignore",
+      "package.json",
+      "npm/cox-protocol.js",
       "pyproject.toml",
       "requirements.txt",
+      "templates/ComponentName.cox.template",
+      "templates/Page.cox.template",
+      "templates/crop_metadata.cox.template",
       "tools/__init__.py",
       "tools/cox_cli.py",
       "tools/cox_lib.py",
+      "tools/package_target.py",
+      "tools/react_target.py",
       "editor-support/vscode/package.json",
       "editor-support/vscode/language-configuration.json",
-      "editor-support/vscode/syntaxes/cox.tmLanguage.json"
+      "editor-support/vscode/syntaxes/cox.tmLanguage.json",
+      "editor-support/vscode/.vscodeignore",
+      "editor-support/vscode/LICENSE",
+      "editor-support/vscode/README.md",
+      "editor-support/vscode/CHANGELOG.md",
+      "editor-support/vscode/snippets/cox-common.json",
+      "editor-support/vscode/snippets/cox-manifest.json",
+      "editor-support/vscode/snippets/cox-page.json",
+      "editor-support/vscode/snippets/cox-component.json",
+      "editor-support/vscode/snippets/cox-protocol.json",
+      "editor-support/vscode/snippets/cox-crop-metadata.json"
     ],
     "pages": [
       {
@@ -168,6 +238,25 @@
         ]
       }
     ]
+  },
+  "targetOutputs": {
+    "json": {
+      "output_root": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/normalized",
+      "document_count": 16
+    },
+    "react": {
+      "output_root": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/react",
+      "component_count": 4,
+      "page_count": 1,
+      "manifest": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/react/manifest.react.json"
+    },
+    "package": {
+      "output_root": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package",
+      "archive": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package/cox_protocol_package_corrected.zip",
+      "manifest": "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/package/cox_protocol_package_corrected.manifest.json",
+      "file_count": 91,
+      "sha256": "f5177da2b672933b1a94e022fef9c474e828b8425c62919c62845a05713b3ffc"
+    }
   },
   "warnings": []
 }

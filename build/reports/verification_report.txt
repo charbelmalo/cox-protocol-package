@@ -1,14 +1,33 @@
 CompiledVerificationReport:
   CoxVersion: "1.0"
-  ProjectRoot: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package"
+  ProjectRoot: "cox_protocol_package"
   Manifest: "manifest.cox"
   ValidatedDocuments: 17
-  NormalizedOutputRoot: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/normalized"
-  CompiledManifest: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/manifest.compiled.json"
-  ReferencedPathsChecked: 38
+  GuideDocs: 2
+  SkillBundles: 6
+  CompiledManifest: "build/manifest.compiled.json"
+  ReferencedPathsChecked: 66
+  Targets:
+    - "json"
+    - "react"
+    - "package"
   Warnings:
     - "none"
   Outputs:
-    VerificationReport: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/reports/verification_report.txt"
-    ManifestCompiledJson: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/manifest.compiled.json"
-    NormalizedDirectory: "/Users/charbelmalo/Developer/CustomPackages/cox_protocol_package/build/normalized"
+    BuildRoot: "build"
+    VerificationReport: "build/reports/verification_report.txt"
+    ManifestCompiledJson: "build/manifest.compiled.json"
+    JsonTarget:
+      OutputRoot: "build/normalized"
+      DocumentCount: 16
+    ReactTarget:
+      OutputRoot: "build/react"
+      PageCount: 1
+      ComponentCount: 4
+      Manifest: "build/react/manifest.react.json"
+    PackageTarget:
+      OutputRoot: "build/package"
+      Archive: "build/package/cox_protocol_package_corrected.zip"
+      Manifest: "build/package/cox_protocol_package_corrected.manifest.json"
+      FileCount: 91
+      Sha256: "f5177da2b672933b1a94e022fef9c474e828b8425c62919c62845a05713b3ffc"

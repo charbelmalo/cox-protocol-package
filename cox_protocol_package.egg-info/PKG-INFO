@@ -2,12 +2,50 @@ Metadata-Version: 2.4
 Name: cox-protocol-package
 Version: 1.0.0
 Summary: Validator and compiler for COX design-spec documents
+Author: Charbel Malo
+License: MIT License
+        
+        Copyright (c) 2026 Charbel Malo
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/charbelmalo/cox-protocol-package#readme
+Project-URL: Repository, https://github.com/charbelmalo/cox-protocol-package
+Project-URL: Issues, https://github.com/charbelmalo/cox-protocol-package/issues
+Keywords: agent-protocol,cox,design-spec,schema,ui-reconstruction,yaml
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Text Processing :: Markup
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+License-File: LICENSE
 Requires-Dist: PyYAML>=6.0
 Requires-Dist: jsonschema>=4.23
 Requires-Dist: typer>=0.12
 Requires-Dist: rich>=13.7
+Dynamic: license-file
 
 # COX Protocol Package
 
@@ -20,6 +58,7 @@ This repository now treats `.cox` as a real format surface rather than renamed t
 - JSON Schemas for validation
 - a manifest-driven validator/compiler CLI
 - normalized JSON build output
+- deterministic package ZIP output
 - minimal VS Code language support
 
 ## COX v1.0
@@ -43,8 +82,12 @@ Schema: "cox.component.v1"
 
 - `COX_FILE_FORMAT_SPECIFICATION_v1.0.md`: formal format rules for COX v1.0
 - `manifest.cox`: manifest entrypoint for validation and compilation
+- `protocols/`: shared protocol documents referenced by the manifest
+- `guides/`: optional guide documents imported from `cox-guides.zip`
+- `skills/`: optional LLM-agent skill bundles imported from `llm_agent_zip_skills_bundle.zip`
 - `schemas/`: JSON Schemas for manifest, page, component, protocol, and crop metadata documents
 - `tools/`: Python validator/compiler package and CLI
+- `npm/`: NPM wrapper that delegates to the Python COX CLI
 - `editor-support/vscode/`: minimal VS Code language registration for `.cox`
 - `LocalAppManager/`: example manifest-driven project content
 - `templates/`: versioned starter templates for page, component, and crop metadata files
@@ -69,6 +112,20 @@ Compile a COX project to normalized JSON:
 cox compile . --out build
 ```
 
+Compile React stubs from the same normalized COX document model:
+
+```bash
+cox compile . --target react --out build
+```
+
+Compile multiple targets in one pass:
+
+```bash
+cox compile . --target json --target react --target package --out build
+```
+
+The `package` target emits a deterministic ZIP archive and package manifest under `build/package/`. The archive uses sorted paths, fixed ZIP timestamps, project-relative names, SHA-256 file records, and excludes transient local artifacts such as `.venv`, `.mypy_cache`, `node_modules`, `*.egg-info`, raw intake ZIPs, and `build/package` itself.
+
 ## Build Output
 
 Compilation emits:
@@ -79,7 +136,78 @@ build/
   normalized/
   reports/
     verification_report.txt
+  package/
+    cox_protocol_package_corrected.zip
+    cox_protocol_package_corrected.manifest.json
 ```
+
+When the `react` target is requested, compilation also emits:
+
+```text
+build/
+  react/
+    components/
+    pages/
+    index.ts
+    manifest.react.json
+```
+
+The React target is intentionally stub-oriented. It uses COX structure, roles, token references, layout notes, and implementation hints to generate TSX placeholders, but it does not invent concrete CSS values, event handlers, or runtime data contracts from prose-only fields.
+
+## Guide and Skill Bundle Intake
+
+The manifest now reserves first-class `GuideDocs` and `SkillBundles` sections. They are empty until the actual archives are available on disk.
+
+Use this intake flow when the two ZIP files are available:
+
+```bash
+unzip -l cox-guides.zip
+unzip -l llm_agent_zip_skills_bundle.zip
+```
+
+Inspect the listings before extraction. Reject or rename entries with absolute paths, `..` path segments, root-level collisions such as `README.md` or `manifest.cox`, generated caches, or unrelated build artifacts. Curated guide content should land in `guides/`; curated skill bundle content should land in `skills/`. After that, add concrete paths to `GuideDocs` and `SkillBundles`, then rerun validation and compilation.
+
+## Protocol Readiness Score
+
+| Attribute | Meter | Score | Notes |
+| --- | --- | ---: | --- |
+| Determinism | `[########--]` | 8/10 | Versioned headers, schema-backed manifests, stable package ordering, fixed ZIP timestamps, and SHA-256 records are now in place. Remaining work is ZIP content intake and optional generated artifact policy. |
+| Validation rigor | `[########--]` | 8/10 | YAML parsing, JSON Schema, manifest path checks, target enums, and unreferenced `.cox` warnings are active. Guide and skill contents will be validated after the archives are available. |
+| Evidence traceability | `[########--]` | 8/10 | Evidence and uncertainty protocols are explicit, and the package manifest records exact file hashes. Runtime visual evidence still depends on real screenshots replacing placeholders. |
+| Distribution readiness | `[######----]` | 6/10 | Local Python CLI, NPM wrapper metadata, deterministic package output, and VSIX packaging are present. Public publishing still needs a real remote repository, account tokens, and final ZIP contents. |
+| Interoperability | `[#######---]` | 7/10 | COX works as YAML-compatible structured text with JSON, React stub, VS Code, NPM, and ZIP surfaces. A TypeScript-native compiler and concrete design-token CSS layer remain future improvements. |
+
+COX complements Vercel v0 and Stitch-style AI design tools rather than replacing them. Those tools optimize prompt-to-app generation, visual iteration, repo sync, and deployment. COX optimizes deterministic file contracts, evidence tracking, schema validation, reproducible package output, and agent-to-agent handoff.
+
+## Publication and Local Testing
+
+Install and test the Python CLI locally:
+
+```bash
+python -m pip install -e .
+cox validate .
+cox compile . --target json --target react --target package --out build
+```
+
+Check the NPM package contents before publishing:
+
+```bash
+npm pack --dry-run
+npm pack
+npm install -g ./cox-protocol-package-1.0.0.tgz
+cox-protocol validate .
+```
+
+The NPM wrapper delegates to the Python CLI, so the Python dependencies in `requirements.txt` must be installed in the environment used by `cox-protocol`. Set `COX_PYTHON=/path/to/python` if the desired interpreter is not `python3`.
+
+Package the VS Code extension locally:
+
+```bash
+cd editor-support/vscode
+npm run package
+```
+
+Public publishing still requires verified NPM, PyPI, and VS Code Marketplace credentials. Before publishing, confirm the repository URLs in `package.json`, `pyproject.toml`, and `editor-support/vscode/package.json` point to the final public repository.
 
 ## Example Layout
 

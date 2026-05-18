@@ -1,0 +1,16 @@
+{
+  "COX Protocol Doc": {
+    "prefix": "cox-protocol",
+    "body": [
+      "CoxVersion: \"1.0\"",
+      "FileType: \"protocol_doc\"",
+      "Slug: \"${1:protocol_slug}\"",
+      "Schema: \"cox.protocol.v1\"",
+      "ProtocolName: \"${2:Protocol Name}\"",
+      "Purpose: \"${3:Describe the protocol purpose}\"",
+      "${4:SectionName}:",
+      "  ${5:Key}: \"${6:Value}\""
+    ],
+    "description": "Insert a COX protocol document skeleton"
+  }
+}

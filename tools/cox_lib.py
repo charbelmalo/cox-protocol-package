@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 import yaml  # type: ignore[import-untyped]
 from jsonschema import Draft202012Validator  # type: ignore[import-untyped]
@@ -18,6 +18,8 @@ SCHEMA_FILENAMES = {
     "cox.protocol.v1": "cox.protocol.v1.schema.json",
     "cox.crop_metadata.v1": "cox.crop_metadata.v1.schema.json",
 }
+
+SUPPORTED_COMPILE_TARGETS = ("json", "react", "package")
 
 
 class CoxError(RuntimeError):
@@ -94,6 +96,13 @@ def relative_path(root: Path, path: Path) -> str:
     return path.resolve().relative_to(root.resolve()).as_posix()
 
 
+def format_report_path(root: Path, path: Path) -> str:
+    try:
+        return relative_path(root, path)
+    except ValueError:
+        return path.resolve().as_posix()
+
+
 def unique_paths(paths: list[Path]) -> list[Path]:
     ordered: list[Path] = []
     seen: set[Path] = set()
@@ -138,8 +147,14 @@ def build_manifest_index(
     reference_docs = [
         project_root / path for path in manifest.get("ReferenceDocs", [])
     ]
+    guide_docs = [
+        project_root / path for path in manifest.get("GuideDocs", [])
+    ]
     protocol_docs = [
         project_root / path for path in manifest.get("ProtocolDocs", [])
+    ]
+    skill_bundles = [
+        project_root / path for path in manifest.get("SkillBundles", [])
     ]
     schema_files = [
         project_root / path for path in manifest.get("Schemas", [])
@@ -150,8 +165,18 @@ def build_manifest_index(
 
     page_entries: list[dict[str, Any]] = []
     cox_documents = protocol_docs.copy()
+    for optional_cox_path in [*guide_docs, *skill_bundles]:
+        if optional_cox_path.suffix == ".cox":
+            cox_documents.append(optional_cox_path)
+        elif optional_cox_path.exists() and optional_cox_path.is_dir():
+            cox_documents.extend(optional_cox_path.rglob("*.cox"))
     referenced_paths = (
-        reference_docs + protocol_docs + schema_files + tooling_files
+        reference_docs
+        + guide_docs
+        + protocol_docs
+        + skill_bundles
+        + schema_files
+        + tooling_files
     )
 
     for page in manifest.get("Pages", []):
@@ -202,8 +227,14 @@ def build_manifest_index(
         "reference_docs": [
             relative_path(project_root, path) for path in reference_docs
         ],
+        "guide_docs": [
+            relative_path(project_root, path) for path in guide_docs
+        ],
         "protocol_docs": [
             relative_path(project_root, path) for path in protocol_docs
+        ],
+        "skill_bundles": [
+            relative_path(project_root, path) for path in skill_bundles
         ],
         "schema_files": [
             relative_path(project_root, path) for path in schema_files
@@ -288,55 +319,39 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(serialized, encoding="utf-8")
 
 
-def build_report(summary: ValidationSummary, build_root: Path) -> str:
-    warning_lines = summary.warnings or ["none"]
-    report_lines = [
-        "CompiledVerificationReport:",
-        '  CoxVersion: "1.0"',
-        f'  ProjectRoot: "{summary.project_root.as_posix()}"',
-        (
-            "  Manifest: "
-            f'"{relative_path(summary.project_root, summary.manifest_path)}"'
-        ),
-        f'  ValidatedDocuments: {len(summary.documents)}',
-        f'  NormalizedOutputRoot: "{(build_root / "normalized").as_posix()}"',
-        (
-            "  CompiledManifest: "
-            f'"{(build_root / "manifest.compiled.json").as_posix()}"'
-        ),
-        f'  ReferencedPathsChecked: {len(summary.referenced_paths)}',
-        "  Warnings:",
-    ]
-    report_lines.extend(f'    - "{line}"' for line in warning_lines)
-    report_lines.extend(
-        [
-            "  Outputs:",
-            (
-                "    VerificationReport: "
-                f'"{(
-                    build_root / "reports" / "verification_report.txt"
-                ).as_posix()}"'
-            ),
-            (
-                "    ManifestCompiledJson: "
-                f'"{(build_root / "manifest.compiled.json").as_posix()}"'
-            ),
-            (
-                "    NormalizedDirectory: "
-                f'"{(build_root / "normalized").as_posix()}"'
-            ),
-        ]
-    )
-    return "\n".join(report_lines) + "\n"
+def normalize_compile_targets(targets: Sequence[str] | None) -> list[str]:
+    requested_targets = list(targets or ["json"])
+    expanded_targets: list[str] = []
+
+    for raw_target in requested_targets:
+        for piece in raw_target.split(","):
+            target = piece.strip().lower()
+            if not target:
+                continue
+            if target == "all":
+                expanded_targets.extend(SUPPORTED_COMPILE_TARGETS)
+                continue
+            expanded_targets.append(target)
+
+    normalized_targets: list[str] = []
+    for target in expanded_targets or ["json"]:
+        if target not in SUPPORTED_COMPILE_TARGETS:
+            supported = ", ".join(SUPPORTED_COMPILE_TARGETS)
+            raise CoxError(
+                f"Unsupported compile target '{target}'. "
+                f"Supported targets: {supported}"
+            )
+        if target not in normalized_targets:
+            normalized_targets.append(target)
+
+    return normalized_targets
 
 
-def compile_project(target: Path, out_dir: Path) -> dict[str, Any]:
-    summary = validate_project(target)
-    build_root = (
-        out_dir if out_dir.is_absolute() else summary.project_root / out_dir
-    )
+def emit_json_target(
+    summary: ValidationSummary,
+    build_root: Path,
+) -> dict[str, Any]:
     normalized_root = build_root / "normalized"
-    reports_root = build_root / "reports"
 
     for document_path, payload in summary.documents.items():
         if document_path == summary.manifest_path:
@@ -346,16 +361,180 @@ def compile_project(target: Path, out_dir: Path) -> dict[str, Any]:
         )
         write_json(output_path.with_suffix(".json"), payload)
 
+    return {
+        "output_root": normalized_root,
+        "document_count": len(summary.documents) - 1,
+    }
+
+
+def build_report(
+    summary: ValidationSummary,
+    build_root: Path,
+    target_results: dict[str, dict[str, Any]],
+) -> str:
+    warning_lines = summary.warnings or ["none"]
+    compiled_manifest = format_report_path(
+        summary.project_root,
+        build_root / "manifest.compiled.json",
+    )
+    build_root_label = format_report_path(summary.project_root, build_root)
+    verification_report = format_report_path(
+        summary.project_root,
+        build_root / "reports" / "verification_report.txt",
+    )
+    report_lines = [
+        "CompiledVerificationReport:",
+        '  CoxVersion: "1.0"',
+        f'  ProjectRoot: "{summary.project_root.name}"',
+        (
+            "  Manifest: "
+            f'"{relative_path(summary.project_root, summary.manifest_path)}"'
+        ),
+        f'  ValidatedDocuments: {len(summary.documents)}',
+        f'  GuideDocs: {len(summary.build_index["guide_docs"])}',
+        f'  SkillBundles: {len(summary.build_index["skill_bundles"])}',
+        f'  CompiledManifest: "{compiled_manifest}"',
+        f'  ReferencedPathsChecked: {len(summary.referenced_paths)}',
+        "  Targets:",
+    ]
+    report_lines.extend(
+        f'    - "{target_name}"' for target_name in target_results
+    )
+    report_lines.append("  Warnings:")
+    report_lines.extend(f'    - "{line}"' for line in warning_lines)
+    report_lines.extend(
+        [
+            "  Outputs:",
+            f'    BuildRoot: "{build_root_label}"',
+            f'    VerificationReport: "{verification_report}"',
+            f'    ManifestCompiledJson: "{compiled_manifest}"',
+        ]
+    )
+
+    json_result = target_results.get("json")
+    if json_result is not None:
+        json_output_root = format_report_path(
+            summary.project_root,
+            json_result["output_root"],
+        )
+        report_lines.extend(
+            [
+                "    JsonTarget:",
+                f'      OutputRoot: "{json_output_root}"',
+                (
+                    "      DocumentCount: "
+                    f'{json_result["document_count"]}'
+                ),
+            ]
+        )
+
+    react_result = target_results.get("react")
+    if react_result is not None:
+        react_output_root = format_report_path(
+            summary.project_root,
+            react_result["output_root"],
+        )
+        react_manifest = format_report_path(
+            summary.project_root,
+            react_result["manifest"],
+        )
+        report_lines.extend(
+            [
+                "    ReactTarget:",
+                f'      OutputRoot: "{react_output_root}"',
+                (
+                    "      PageCount: "
+                    f'{react_result["page_count"]}'
+                ),
+                (
+                    "      ComponentCount: "
+                    f'{react_result["component_count"]}'
+                ),
+                (
+                    "      Manifest: "
+                    f'"{react_manifest}"'
+                ),
+            ]
+        )
+
+    package_result = target_results.get("package")
+    if package_result is not None:
+        package_output_root = format_report_path(
+            summary.project_root,
+            package_result["output_root"],
+        )
+        package_archive = format_report_path(
+            summary.project_root,
+            package_result["archive"],
+        )
+        package_manifest = format_report_path(
+            summary.project_root,
+            package_result["manifest"],
+        )
+        report_lines.extend(
+            [
+                "    PackageTarget:",
+                f'      OutputRoot: "{package_output_root}"',
+                f'      Archive: "{package_archive}"',
+                f'      Manifest: "{package_manifest}"',
+                f'      FileCount: {package_result["file_count"]}',
+                f'      Sha256: "{package_result["sha256"]}"',
+            ]
+        )
+
+    return "\n".join(report_lines) + "\n"
+
+
+def compile_project(
+    target: Path,
+    out_dir: Path,
+    targets: Sequence[str] | None = None,
+) -> dict[str, Any]:
+    summary = validate_project(target)
+    compile_targets = normalize_compile_targets(targets)
+    build_root = (
+        out_dir if out_dir.is_absolute() else summary.project_root / out_dir
+    )
+    reports_root = build_root / "reports"
+    target_results: dict[str, dict[str, Any]] = {}
+
+    if "json" in compile_targets:
+        target_results["json"] = emit_json_target(summary, build_root)
+
+    if "react" in compile_targets:
+        from .react_target import emit_react_stubs
+
+        target_results["react"] = emit_react_stubs(summary, build_root)
+
+    if "package" in compile_targets:
+        from .package_target import emit_package_archive
+
+        target_results["package"] = emit_package_archive(
+            summary,
+            build_root,
+            target_results,
+        )
+
     manifest_payload = {
         "compiledWith": "cox 1.0.0",
         "mimeType": "application/vnd.cox+yaml",
+        "targets": compile_targets,
         "manifest": summary.documents[summary.manifest_path],
         "resolvedFiles": {
             "referenceDocs": summary.build_index["reference_docs"],
+            "guideDocs": summary.build_index["guide_docs"],
             "protocolDocs": summary.build_index["protocol_docs"],
+            "skillBundles": summary.build_index["skill_bundles"],
             "schemaFiles": summary.build_index["schema_files"],
             "toolingFiles": summary.build_index["tooling_files"],
             "pages": summary.build_index["pages"],
+        },
+        "targetOutputs": {
+            target_name: {
+                key: value.as_posix() if isinstance(value, Path) else value
+                for key, value in result.items()
+            }
+            for target_name, result in target_results.items()
         },
         "warnings": summary.warnings,
     }
@@ -363,11 +542,15 @@ def compile_project(target: Path, out_dir: Path) -> dict[str, Any]:
 
     reports_root.mkdir(parents=True, exist_ok=True)
     report_path = reports_root / "verification_report.txt"
-    report_path.write_text(build_report(summary, build_root), encoding="utf-8")
+    report_path.write_text(
+        build_report(summary, build_root, target_results),
+        encoding="utf-8",
+    )
 
     return {
         "build_root": build_root,
-        "normalized_count": len(summary.documents) - 1,
+        "targets": compile_targets,
+        "target_results": target_results,
         "compiled_manifest": build_root / "manifest.compiled.json",
         "report": report_path,
         "warnings": summary.warnings,

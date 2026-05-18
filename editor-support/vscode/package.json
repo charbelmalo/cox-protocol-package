@@ -1,15 +1,38 @@
 {
   "name": "cox-language-support",
   "displayName": "COX Language Support",
-  "description": "Syntax highlighting and language configuration for COX files.",
-  "version": "1.0.0",
-  "publisher": "local",
+  "description": "Syntax highlighting, snippets, and packaging support for COX files.",
+  "version": "1.1.0",
+  "publisher": "charbelmalo",
+  "license": "MIT",
+  "preview": true,
+  "markdown": "github",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/charbelmalo/cox-protocol-package.git"
+  },
+  "homepage": "https://github.com/charbelmalo/cox-protocol-package#readme",
+  "bugs": {
+    "url": "https://github.com/charbelmalo/cox-protocol-package/issues"
+  },
   "engines": {
     "vscode": "^1.90.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets"
   ],
+  "keywords": [
+    "cox",
+    "yaml",
+    "design-spec",
+    "ui-spec",
+    "component-spec",
+    "agent-readable"
+  ],
+  "scripts": {
+    "package": "vsce package --out ../../build/vscode/cox-language-support-1.1.0.vsix"
+  },
   "contributes": {
     "languages": [
       {
@@ -30,6 +53,38 @@
         "scopeName": "source.cox",
         "path": "./syntaxes/cox.tmLanguage.json"
       }
-    ]
+    ],
+    "snippets": [
+      {
+        "language": "cox",
+        "path": "./snippets/cox-common.json"
+      },
+      {
+        "language": "cox",
+        "path": "./snippets/cox-manifest.json"
+      },
+      {
+        "language": "cox",
+        "path": "./snippets/cox-page.json"
+      },
+      {
+        "language": "cox",
+        "path": "./snippets/cox-component.json"
+      },
+      {
+        "language": "cox",
+        "path": "./snippets/cox-protocol.json"
+      },
+      {
+        "language": "cox",
+        "path": "./snippets/cox-crop-metadata.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[cox]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+      }
+    }
   }
 }

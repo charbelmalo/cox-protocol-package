@@ -8,6 +8,22 @@
       "name": "keyword.control.cox"
     },
     {
+      "match": "^(EvidenceSummary|VisibleStructure|Interactions|NamingDecision|Layout|Children|Responsive|VisualStyle|ImplementationHints|BuildTargets|VerificationRules|ReferenceDocs|ProtocolDocs|Schemas|ToolingFiles)(?=:\\s)",
+      "name": "entity.name.section.cox"
+    },
+    {
+      "match": "\b(manifest|page_spec|component_spec|protocol_doc|crop_metadata)\b",
+      "name": "storage.type.cox"
+    },
+    {
+      "match": "\bcox\\.(manifest|page|component|protocol|crop_metadata)\\.v1\b",
+      "name": "support.type.schema.cox"
+    },
+    {
+      "match": "\b(Visible|UserSpecified|Inferred|Intended|Recommended|High|Medium|Low)\b",
+      "name": "constant.language.cox"
+    },
+    {
       "include": "source.yaml"
     }
   ]

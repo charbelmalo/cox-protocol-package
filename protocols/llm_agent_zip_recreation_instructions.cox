@@ -32,17 +32,17 @@ CanonicalOutputStructure:
 
 RootPackageDocs:
   - "README.md"
-  - "llm_agent_zip_recreation_instructions.cox"
-  - "deterministic_naming_convention.cox"
-  - "recursive_decomposition_protocol.cox"
-  - "screenshot_partitioning_protocol.cox"
-  - "evidence_and_uncertainty_protocol.cox"
-  - "sub_agents_orchestration.cox"
-  - "design_tokens.cox"
-  - "component_binding_graph.cox"
-  - "website_logic_and_functionality.cox"
-  - "coding_agent_starting_point.cox"
-  - "visual_acceptance_checklist.cox"
+  - "protocols/llm_agent_zip_recreation_instructions.cox"
+  - "protocols/deterministic_naming_convention.cox"
+  - "protocols/recursive_decomposition_protocol.cox"
+  - "protocols/screenshot_partitioning_protocol.cox"
+  - "protocols/evidence_and_uncertainty_protocol.cox"
+  - "protocols/sub_agents_orchestration.cox"
+  - "protocols/design_tokens.cox"
+  - "protocols/component_binding_graph.cox"
+  - "protocols/website_logic_and_functionality.cox"
+  - "protocols/coding_agent_starting_point.cox"
+  - "protocols/visual_acceptance_checklist.cox"
   - "manifest.cox"
 
 Workflow:

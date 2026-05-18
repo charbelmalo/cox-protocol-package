@@ -6,7 +6,7 @@ ProtocolName: "Visual Acceptance Checklist"
 Purpose: "Give implementation agents concrete pass/fail checks for reconstructed UI."
 
 GlobalChecks:
-  - "All page and component names match deterministic_naming_convention.cox."
+  - "All page and component names match protocols/deterministic_naming_convention.cox."
   - "Each page folder contains {page_slug}.cox and at least one {page_slug}_screenshot file."
   - "Each component folder contains component_slug.cox and component_slug_screenshot if a crop was generated."
   - "Evidence levels are present for visible, inferred, intended, and recommended behavior."

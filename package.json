@@ -1,0 +1,53 @@
+{
+  "name": "cox-protocol-package",
+  "version": "1.0.0",
+  "description": "Schema-backed COX protocol files, compiler tooling, and package metadata for deterministic UI reconstruction specs.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "cox-protocol": "./npm/cox-protocol.js"
+  },
+  "files": [
+    "COX_FILE_FORMAT_SPECIFICATION_v1.0.md",
+    "LICENSE",
+    "README.md",
+    "editor-support/vscode",
+    "guides",
+    "manifest.cox",
+    "npm/cox-protocol.js",
+    "protocols",
+    "pyproject.toml",
+    "requirements.txt",
+    "schemas",
+    "skills",
+    "templates",
+    "tools",
+    "!**/__pycache__/**",
+    "!**/*.pyc",
+    "!**/*.pyo"
+  ],
+  "keywords": [
+    "cox",
+    "design-spec",
+    "schema",
+    "ui-reconstruction",
+    "agent-protocol",
+    "yaml"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charbelmalo/cox-protocol-package.git"
+  },
+  "homepage": "https://github.com/charbelmalo/cox-protocol-package#readme",
+  "bugs": {
+    "url": "https://github.com/charbelmalo/cox-protocol-package/issues"
+  },
+  "scripts": {
+    "pack:dry-run": "npm pack --dry-run",
+    "package:vscode": "cd editor-support/vscode && npm run package",
+    "smoke:python": "cox validate . && cox compile . --target json --target react --target package --out build"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
