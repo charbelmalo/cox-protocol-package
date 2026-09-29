@@ -2,7 +2,7 @@
   "name": "cox-language-support",
   "displayName": "COX Language Support",
   "description": "Syntax highlighting, snippets, and packaging support for COX files.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "charbelmalo",
   "license": "MIT",
   "preview": true,
@@ -31,7 +31,7 @@
     "agent-readable"
   ],
   "scripts": {
-    "package": "vsce package --out ../../build/vscode/cox-language-support-1.1.0.vsix"
+    "package": "node ../../scripts/package-vscode.mjs"
   },
   "contributes": {
     "languages": [

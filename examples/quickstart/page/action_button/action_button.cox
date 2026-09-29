@@ -1,0 +1,34 @@
+CoxVersion: '1.0'
+FileType: component_spec
+Slug: action_button
+Schema: cox.component.v1
+ComponentName: ActionButton
+Role: Primary action
+EvidenceSummary:
+  Visible: []
+  UserSpecified: []
+  Inferred: []
+  Intended:
+  - Reference illustration describes a proposed interface, not an observed deployed
+    product.
+  Recommended: []
+VisibleStructure:
+  Label: Continue
+Interactions:
+  Intended:
+  - Activate using pointer, Enter or Space.
+  Recommended:
+  - Preserve a visible keyboard focus indicator.
+NamingDecision:
+  ChosenName: action_button
+  Reason: Explicit role in the example brief.
+  RejectedAlternatives: []
+  AmbiguityRisk: Low
+  EvidenceLevel: Intended
+VisualStyle:
+  Tokens:
+  - color.action
+  - space.control
+ImplementationHints:
+- Implement the action only after its behavior is supplied; the compiler emits a structural
+  scaffold.

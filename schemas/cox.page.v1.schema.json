@@ -161,7 +161,7 @@
           }
         }
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "interactionSummary": {
       "type": "object",
@@ -189,9 +189,15 @@
           "items": {
             "type": "string"
           }
+        },
+        "UserSpecified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "namingDecision": {
       "type": "object",
@@ -219,7 +225,14 @@
           "type": "string"
         },
         "EvidenceLevel": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "Visible",
+            "UserSpecified",
+            "Inferred",
+            "Intended",
+            "Recommended"
+          ]
         }
       },
       "additionalProperties": true

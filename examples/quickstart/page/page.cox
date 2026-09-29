@@ -1,0 +1,39 @@
+CoxVersion: '1.0'
+FileType: page_spec
+Slug: example
+Schema: cox.page.v1
+PageName: Example
+ProjectName: CoxExample
+EvidenceSummary:
+  Visible: []
+  UserSpecified: []
+  Inferred: []
+  Intended:
+  - Reference illustration describes a proposed interface, not an observed deployed
+    product.
+  Recommended: []
+VisibleStructure:
+  Regions:
+  - primary_action
+Interactions:
+  Intended:
+  - User reviews the proposed action before invoking it.
+NamingDecision:
+  ChosenName: Example
+  Reason: Explicit role in the example brief.
+  RejectedAlternatives: []
+  AmbiguityRisk: Low
+  EvidenceLevel: Intended
+Layout:
+  Desktop: One centered content column.
+  Tablet: One centered content column.
+  Mobile: One column with comfortable page padding.
+Children:
+  Components:
+  - Slug: action_button
+    Folder: action_button/
+    Role: Primary action
+RecursiveDecompositionDecision:
+  Complexity: SimplePage
+  Reason: One reusable action.
+  Action: Bind the action_button component.

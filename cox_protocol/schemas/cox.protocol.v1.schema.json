@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cox.protocol.v1",
+  "title": "COX Protocol Document",
+  "type": "object",
+  "required": [
+    "CoxVersion",
+    "FileType",
+    "Slug",
+    "Schema",
+    "ProtocolName",
+    "Purpose"
+  ],
+  "properties": {
+    "CoxVersion": {
+      "const": "1.0"
+    },
+    "FileType": {
+      "const": "protocol_doc"
+    },
+    "Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+    },
+    "Schema": {
+      "const": "cox.protocol.v1"
+    },
+    "ProtocolName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Purpose": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}

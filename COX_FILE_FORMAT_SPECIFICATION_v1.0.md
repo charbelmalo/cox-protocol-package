@@ -1,236 +1,76 @@
-# COX File Format Specification v1.0
+# COX file format 1.0
 
-## 1. Status
+This specification accompanies compiler 1.2.0. The executable field contract is defined by the five JSON Schemas in `schemas/`, mirrored in the installed `cox_protocol/schemas/` package.
 
-- Format name: `COX`
-- Version: `1.0`
-- File extension: `.cox`
-- MIME type: `application/vnd.cox+yaml`
-- Encoding: `UTF-8`
-- Syntax base: `YAML-compatible structured text`
-- Entry point: `manifest.cox`
+## Representation
 
-## 2. Purpose
+COX uses `.cox`, UTF-8, and the descriptive MIME type `application/vnd.cox+yaml`. Each project has one `manifest.cox` entry point. Documents are YAML mappings with JSON-compatible values: string keys; mappings; arrays; strings; booleans; finite numbers; null. Key order is not significant. Common headers should appear first for readability, but the parser does not require an order.
 
-COX is a structured file format for UI reconstruction, evidence tracking, component binding, implementation guidance, and agent-readable design specifications. A COX project is manifest-driven and intended to be both human-readable and machine-validatable.
-
-## 3. Common Header
-
-Every `.cox` document must begin with the following versioned metadata header:
+The implementation uses PyYAML's safe scalar resolution. Quote version strings, dates, and textual YAML boolean words such as `Yes`, `No`, `on`, and `off`. Duplicate keys, aliases (including merge aliases), non-string keys, YAML-specific object types, timestamps and non-finite numbers are rejected. Unsupported custom tags are rejected. Anchors without references add no semantics. One document per file is supported.
 
 ```yaml
 CoxVersion: "1.0"
 FileType: "component_spec"
-Slug: "projects_grid_cards"
+Slug: "action_button"
 Schema: "cox.component.v1"
 ```
 
-Required header fields for all COX documents:
+All documents require these four fields. `CoxVersion` must be the string `1.0`. Slugs match `^[a-z0-9]+(_[a-z0-9]+)*$`. A document's `FileType` and `Schema` must correspond exactly.
 
-- `CoxVersion`
-- `FileType`
-- `Slug`
-- `Schema`
+## Document types
 
-## 4. Supported File Types
+The following required fields are **in addition to the four common fields**. See the schemas for nested requirements, enums and optional fields.
 
-### `manifest`
+| FileType | Schema | Additional required fields |
+|---|---|---|
+| manifest | cox.manifest.v1 | ProjectName, ProtocolExtension, MimeType, EntryPoint, Pages |
+| page_spec | cox.page.v1 | PageName, ProjectName, EvidenceSummary, VisibleStructure, Interactions, NamingDecision, Layout, Children, RecursiveDecompositionDecision |
+| component_spec | cox.component.v1 | ComponentName, Role, EvidenceSummary, VisibleStructure, Interactions, NamingDecision |
+| protocol_doc | cox.protocol.v1 | ProtocolName, Purpose |
+| crop_metadata | cox.crop_metadata.v1 | SourceScreenshot, OutputScreenshot, BoundaryConfidence, EstimatedBoundingBox |
 
-Project entrypoint that defines the package contract, referenced pages, guide documents, protocol documents, skill bundles, schemas, tooling, and build targets.
+A manifest requires at least one page. `ProtocolExtension`, `MimeType`, and `EntryPoint` use the fixed values `.cox`, `application/vnd.cox+yaml`, and `manifest.cox`. Every page entry includes `PageName`, `Slug`, `Folder`, `PageInstruction`, `PageScreenshotPlaceholder`, and `Components`. Component entries include `Slug`, `Folder`, `ComponentInstruction`, and `ComponentScreenshotPlaceholder`. Empty component arrays are permitted.
 
-Required top-level fields:
+`NamingDecision` records ChosenName, Reason, RejectedAlternatives, AmbiguityRisk, and EvidenceLevel. Layout requires Desktop, Tablet, and Mobile strings. COX v1 permits extensible prose fields in several objects; passing schema validation does not make those fields executable.
 
-- `CoxVersion`
-- `FileType`
-- `Slug`
-- `Schema`
-- `ProjectName`
-- `ProtocolExtension`
-- `MimeType`
-- `EntryPoint`
-- `Pages`
+## Evidence
 
-Optional manifest file collections:
+`EvidenceSummary` and `Interactions` accept the five evidence labels `Visible`, `UserSpecified`, `Inferred`, `Intended`, and `Recommended`, each an array of strings. Unknown labels are rejected. A naming decision's EvidenceLevel must use the same vocabulary. These categories distinguish observation, supplied requirements, interpretation, desired behavior, and suggestions.
 
-- `ReferenceDocs`: human-facing root documentation files
-- `GuideDocs`: guide or tutorial files imported into `guides/`
-- `ProtocolDocs`: `.cox` methodology and system protocol documents
-- `SkillBundles`: LLM-agent skill bundle files or directories imported into `skills/`
-- `Schemas`: JSON Schema files used by the validator
-- `ToolingFiles`: compiler, editor, package, and distribution tooling files
+The tool checks the representation and vocabulary, not whether an observation is true. Screenshot placeholders and generated reference illustrations must be described honestly. Crop metadata is a planning document: screenshot strings and bounding-box descriptions are not a pixel-analysis or file-existence guarantee.
 
-Supported build targets:
+## References and bindings
 
-- `json`
-- `react`
-- `package`
+Manifest paths are relative POSIX paths within the project. Absolute paths, backslashes, parent traversal and symlink references are rejected. Referenced inputs must exist. Page/component instructions and their screenshot/placeholder files must be regular files inside the corresponding Folder. Instruction files use `.cox`.
 
-### `page_spec`
+The page document's Slug, PageName and ProjectName must match its manifest entry and project. Page slugs are unique. A component document's Slug must match its manifest binding. A shared component slug may be reused when it names the same source; different source files may not claim the same component slug.
 
-Defines page-level evidence, visible regions, child component bindings, layout behavior, and page interactions.
+`Children.Components` must match that page's manifest component set, without duplicates. Each child's Folder is relative to the page instruction's directory. It may use `..` to reach a shared component **within** the project; it cannot escape the project or traverse symlinks.
 
-Required top-level fields:
+Optional input collections are ReferenceDocs, GuideDocs, ProtocolDocs, SkillBundles, Schemas and ToolingFiles. ProtocolDocs must contain protocol document files. Referenced `.cox` files under GuideDocs and SkillBundles are also validated. Other collections include assets/documentation without interpreting arbitrary files as COX. The compiler always uses its installed canonical schemas; the Schemas collection packages supporting files and cannot override validation rules.
 
-- `CoxVersion`
-- `FileType`
-- `PageName`
-- `Slug`
-- `Schema`
-- `ProjectName`
-- `EvidenceSummary`
-- `VisibleStructure`
-- `Interactions`
+Unreferenced `.cox` files produce a warning; `--strict` makes that warning an error. Nested independent projects, managed build outputs and transient directories are excluded from this scan. `VerificationRules` and protocol text are guidance, not dynamically executed code.
 
-### `component_spec`
+## Compilation
 
-Defines a reusable UI component, its evidence basis, visible structure, visual style, and interactions.
+Validation precedes every build. CLI targets are `json`, `react`, `package`, and `all`. Repeated/comma-separated target arguments are normalized into stable order. Without a target the compiler emits JSON. Manifest BuildTargets is descriptive project metadata.
 
-Required top-level fields:
+- **JSON:** normalized documents preserving data and evidence; compiled manifest records relative input/output paths.
+- **React:** typed TSX page/component scaffolds with source evidence comments. Snake-case slugs become PascalCase; numeric starts receive `Cox`. Conflicting generated symbols are errors. ProjectName must be a portable single directory name. Prose is safely escaped. No finished CSS, event behavior, data fetching, AST conformance or rendered compliance is inferred.
+- **Package:** a single-root ZIP named by PackageName or Slug. The root is the manifest slug, independent of checkout location. It contains declared sources and only artifacts from this invocation, including the compiled manifest and verification report.
 
-- `CoxVersion`
-- `FileType`
-- `ComponentName`
-- `Slug`
-- `Schema`
-- `EvidenceSummary`
-- `VisibleStructure`
-- `Interactions`
+Relative output paths are relative to the discovered project. Absolute external outputs are supported. Output parents are canonicalized, including standard OS temporary-directory aliases. The output directory itself and managed paths within it may not be symlinks. Canonical output paths may not overlap source inputs, the project root or an ancestor. Builds stage independently and publish only owned files; `.cox-build.json` records their exact hashes. Unknown collisions and human-modified artifacts are preserved with a diagnostic. A target removed from the command removes only its prior owned files.
 
-### `protocol_doc`
+## Archive contract
 
-Defines COX process rules, naming conventions, orchestration rules, logic notes, design tokens, or validation checklists.
+Names are sorted, timestamps fixed at 1980-01-01, permissions normalized to 0644 (or 0755 for executable source files), and archive paths use POSIX separators. Cache/build directories, Python bytecode, environment files and identified historical raw intake archives are excluded. Explicit references to excluded inputs fail packaging.
 
-Required top-level fields:
+The embedded `package.manifest.json` inventories payload entries with path, source, kind, size, SHA-256 and mode. It excludes itself to avoid a self-referential hash. `fileCount` counts those payload entries; the ZIP has one additional inventory entry. An external `.manifest.json` additionally records the complete ZIP's size and SHA-256. The ZIP does not contain itself or this external inventory.
 
-- `CoxVersion`
-- `FileType`
-- `Slug`
-- `Schema`
-- `ProtocolName`
-- `Purpose`
+`cox verify-package` checks entry uniqueness, portable paths, a single root inventory, exact inventory coverage, sizes, hashes, permissions and absence of symlink entries. It does not establish author identity or protect against an attacker replacing both files and the inventory. Verify a trusted external checksum when provenance matters. Byte-for-byte reproducibility is scoped to identical input bytes/modes and compression toolchain.
 
-### `crop_metadata`
+## Errors and compatibility
 
-Defines crop planning metadata for derived screenshots.
+Commands support `--json`, returning `ok` and either result fields or `errors` with code, message, path and location. Invalid contracts/builds/archives exit 1. CLI usage errors exit 2 with the normal argument-parser message. `--strict` is supported for validation and compilation.
 
-Required top-level fields:
-
-- `CoxVersion`
-- `FileType`
-- `Slug`
-- `Schema`
-- `SourceScreenshot`
-- `OutputScreenshot`
-- `BoundaryConfidence`
-- `EstimatedBoundingBox`
-
-## 5. Slug Rules
-
-`Slug` values use lowercase snake case.
-
-Allowed pattern:
-
-```text
-^[a-z0-9]+(_[a-z0-9]+)*$
-```
-
-Examples:
-
-- `dashboard`
-- `projects_grid_cards`
-- `deterministic_naming_convention`
-
-## 6. Evidence Model
-
-When evidence is relevant, COX documents should separate claims into explicit evidence levels:
-
-- `Visible`
-- `UserSpecified`
-- `Inferred`
-- `Intended`
-- `Recommended`
-
-The format does not permit inferred behavior to be represented as certain without explicit visible or user-provided evidence.
-
-## 7. Validation Model
-
-COX documents are parsed as YAML and validated against JSON Schema Draft 2020-12.
-
-Canonical schema ids:
-
-- `cox.manifest.v1`
-- `cox.page.v1`
-- `cox.component.v1`
-- `cox.protocol.v1`
-- `cox.crop_metadata.v1`
-
-Validation must include:
-
-- UTF-8 decoding
-- YAML parsing
-- Schema validation
-- Manifest reference existence checks
-- Page/component path checks
-- Unreferenced `.cox` file detection as a warning
-
-## 8. Compilation Model
-
-The first professional compilation target for COX v1.0 is normalized JSON. The current compiler also supports React stubs and deterministic package ZIP output.
-
-Expected pipeline:
-
-```text
-.cox files
-  -> parse YAML
-  -> validate against schema
-  -> check references and paths
-  -> emit normalized JSON
-  -> generate verification report
-```
-
-Recommended commands:
-
-```bash
-cox validate ./cox_protocol_package
-cox compile ./cox_protocol_package --out ./build
-cox compile ./cox_protocol_package --target react --out ./build
-cox compile ./cox_protocol_package --target json --target react --target package --out ./build
-```
-
-Expected build outputs:
-
-```text
-build/
-  manifest.compiled.json
-  normalized/
-  package/
-    cox_protocol_package_corrected.zip
-    cox_protocol_package_corrected.manifest.json
-  reports/
-    verification_report.txt
-```
-
-Optional React stub output:
-
-```text
-build/
-  react/
-    components/
-    pages/
-    index.ts
-    manifest.react.json
-```
-
-The `react` target consumes the same normalized COX document model used by the JSON target and emits framework-neutral TSX stubs. COX v1.0 does not require the compiler to infer concrete CSS values or executable interaction logic from prose-only layout and evidence sections.
-
-The `package` target emits a deterministic ZIP archive from manifest-referenced source files and any generated outputs produced earlier in the same compilation pass. Package archives must use project-relative paths under a single archive root, sorted file ordering, fixed ZIP timestamps, and SHA-256 records for every packaged file. Local caches, virtual environments, raw intake ZIPs, and package output directories must not be included.
-
-Guide and skill bundle intake is intentionally explicit. The compiler supports `GuideDocs` and `SkillBundles`, but ZIP attachments must be inspected and curated before their paths are added to the manifest.
-
-## 9. Editor Support
-
-COX editor support should register `.cox` as its own language id and may initially inherit YAML-compatible tokenization. Header keys such as `CoxVersion`, `FileType`, `Slug`, and `Schema` should be highlighted distinctly.
-
-## 10. Compatibility
-
-COX v1.0 is compatible with YAML tooling that preserves mappings, lists, strings, and nested objects. COX-specific validity is determined by COX schemas rather than YAML parsing alone.
+Tool versions and file-format versions are independent. Compiler 1.2.0 strengthens diagnostics and rejects previously ambiguous input (duplicate keys, aliases, schema-label typos, inconsistent bindings and unsafe paths). Existing valid format-1.0 projects remain supported. Legacy generated folders without `.cox-build.json` should be rebuilt into a fresh directory. The npm wrapper invokes Python; it is not an independent TypeScript implementation. The VS Code extension provides syntax and snippets, with validation through the CLI.

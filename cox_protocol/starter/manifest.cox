@@ -1,0 +1,26 @@
+CoxVersion: '1.0'
+FileType: manifest
+Slug: cox_example
+Schema: cox.manifest.v1
+ProjectName: CoxExample
+PackageName: cox_example.zip
+ProtocolExtension: .cox
+MimeType: application/vnd.cox+yaml
+EntryPoint: manifest.cox
+ReferenceDocs:
+- README.md
+Pages:
+- PageName: Example
+  Slug: example
+  Folder: page
+  PageInstruction: page/page.cox
+  PageScreenshotPlaceholder: page/reference.svg
+  Components:
+  - Slug: action_button
+    Folder: page/action_button
+    ComponentInstruction: page/action_button/action_button.cox
+    ComponentScreenshotPlaceholder: page/action_button/reference.svg
+BuildTargets:
+- json
+- react
+- package

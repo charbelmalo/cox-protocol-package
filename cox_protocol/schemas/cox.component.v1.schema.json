@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cox.component.v1",
+  "title": "COX Component Spec",
+  "type": "object",
+  "required": [
+    "CoxVersion",
+    "FileType",
+    "ComponentName",
+    "Slug",
+    "Schema",
+    "Role",
+    "EvidenceSummary",
+    "VisibleStructure",
+    "Interactions",
+    "NamingDecision"
+  ],
+  "properties": {
+    "CoxVersion": {
+      "const": "1.0"
+    },
+    "FileType": {
+      "const": "component_spec"
+    },
+    "ComponentName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+    },
+    "Schema": {
+      "const": "cox.component.v1"
+    },
+    "Role": {
+      "type": "string"
+    },
+    "EvidenceSummary": {
+      "$ref": "#/$defs/evidenceSummary"
+    },
+    "VisibleStructure": {
+      "type": "object"
+    },
+    "Interactions": {
+      "$ref": "#/$defs/interactionSummary"
+    },
+    "NamingDecision": {
+      "$ref": "#/$defs/namingDecision"
+    },
+    "VisualStyle": {
+      "type": "object"
+    },
+    "Responsive": {
+      "type": "object"
+    },
+    "ImplementationHints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ChildSubcomponents": {
+      "type": "array"
+    }
+  },
+  "$defs": {
+    "evidenceSummary": {
+      "type": "object",
+      "properties": {
+        "Visible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "UserSpecified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Inferred": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Intended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Recommended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "interactionSummary": {
+      "type": "object",
+      "properties": {
+        "Visible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Inferred": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Intended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Recommended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "UserSpecified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "namingDecision": {
+      "type": "object",
+      "required": [
+        "ChosenName",
+        "Reason",
+        "RejectedAlternatives",
+        "AmbiguityRisk",
+        "EvidenceLevel"
+      ],
+      "properties": {
+        "ChosenName": {
+          "type": "string"
+        },
+        "Reason": {
+          "type": "string"
+        },
+        "RejectedAlternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "AmbiguityRisk": {
+          "type": "string"
+        },
+        "EvidenceLevel": {
+          "type": "string",
+          "enum": [
+            "Visible",
+            "UserSpecified",
+            "Inferred",
+            "Intended",
+            "Recommended"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cox.manifest.v1",
+  "title": "COX Manifest",
+  "type": "object",
+  "required": [
+    "CoxVersion",
+    "FileType",
+    "Slug",
+    "Schema",
+    "ProjectName",
+    "ProtocolExtension",
+    "MimeType",
+    "EntryPoint",
+    "Pages"
+  ],
+  "properties": {
+    "CoxVersion": {
+      "const": "1.0"
+    },
+    "FileType": {
+      "const": "manifest"
+    },
+    "Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+    },
+    "Schema": {
+      "const": "cox.manifest.v1"
+    },
+    "ProjectName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "PackageName": {
+      "type": "string"
+    },
+    "ProtocolExtension": {
+      "const": ".cox"
+    },
+    "MimeType": {
+      "const": "application/vnd.cox+yaml"
+    },
+    "Encoding": {
+      "const": "UTF-8"
+    },
+    "SyntaxBase": {
+      "const": "YAML-compatible structured text"
+    },
+    "EntryPoint": {
+      "const": "manifest.cox"
+    },
+    "ReferenceDocs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "GuideDocs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ProtocolDocs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "SkillBundles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Schemas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ToolingFiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "PageName",
+          "Slug",
+          "Folder",
+          "PageInstruction",
+          "PageScreenshotPlaceholder",
+          "Components"
+        ],
+        "properties": {
+          "PageName": {
+            "type": "string"
+          },
+          "Slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+          },
+          "Folder": {
+            "type": "string"
+          },
+          "PageInstruction": {
+            "type": "string"
+          },
+          "PageScreenshotPlaceholder": {
+            "type": "string"
+          },
+          "Components": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "Slug",
+                "Folder",
+                "ComponentInstruction",
+                "ComponentScreenshotPlaceholder"
+              ],
+              "properties": {
+                "Slug": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+                },
+                "Folder": {
+                  "type": "string"
+                },
+                "ComponentInstruction": {
+                  "type": "string"
+                },
+                "ComponentScreenshotPlaceholder": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "BuildTargets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "json",
+          "react",
+          "package"
+        ]
+      }
+    },
+    "VerificationRules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

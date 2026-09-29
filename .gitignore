@@ -17,3 +17,7 @@ llm_agent_zip_skills_bundle.zip
 build/package/__pycache__/
 *.pyc
 *.egg-info/
+
+build/
+.coverage
+htmlcov/
