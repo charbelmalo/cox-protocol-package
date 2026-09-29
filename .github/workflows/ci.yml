@@ -52,6 +52,7 @@ jobs:
           python scripts/release_check.py --python /tmp/cox-wheel/bin/python --node-cli /tmp/cox-npm/node_modules/cox-protocol-package/bin/cox-protocol.js
           COX_PYTHON=/tmp/cox-wheel/bin/python /tmp/cox-npm/node_modules/.bin/cox-protocol validate /tmp/cox-npm/node_modules/cox-protocol-package --strict
       - run: npm run package:vscode
+      - run: python scripts/check_distribution.py --dist dist --vsix build/vscode/cox-language-support-1.2.0.vsix
       - run: python -m twine check dist/*.whl dist/*.tar.gz
       - uses: actions/upload-artifact@v4
         with:

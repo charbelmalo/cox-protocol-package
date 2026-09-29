@@ -26,15 +26,15 @@
     "LocalAppManager",
     "pyproject.toml",
     "requirements.txt",
+    "FINALIZATION.md",
+    "scripts",
+    "tests",
+    "MANIFEST.in",
     "!**/__pycache__/**",
     "!**/*.pyc",
     "!**/.cox-build.json",
     "!**/node_modules/**",
-    "!**/build/**",
-    "FINALIZATION.md",
-    "scripts",
-    "tests",
-    "MANIFEST.in"
+    "!**/build/**"
   ],
   "keywords": [
     "cox",
