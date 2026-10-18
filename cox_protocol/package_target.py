@@ -92,6 +92,12 @@ def emit_package_archive(summary, build_root: Path, target_results) -> dict[str,
                     str(source),
                 )
             rel = relative_path(summary.project_root, source)
+            if any(not portable_segment(part) for part in rel.split("/")):
+                fail(
+                    "PACKAGE_PATH",
+                    "Package source contains a non-portable archive path",
+                    rel,
+                )
             if rel == "package.manifest.json" or rel.startswith("build/"):
                 fail("PACKAGE_RESERVED", "Source occupies a reserved archive path", rel)
             entries[rel] = (
@@ -165,7 +171,8 @@ def verify_archive(path: Path) -> dict[str, Any]:
             names = archive.namelist()
             if len(set(names)) != len(names):
                 fail("ARCHIVE_DUPLICATE", "Archive contains duplicate names")
-            for name in names:
+            for info in archive.infolist():
+                name = info.filename
                 if (
                     any(part in ("", ".", "..") for part in name.split("/"))
                     or any(not portable_segment(part) for part in name.split("/"))
@@ -174,6 +181,8 @@ def verify_archive(path: Path) -> dict[str, Any]:
                     or len(PurePosixPath(name).parts) < 2
                 ):
                     fail("ARCHIVE_PATH", "Archive contains an invalid path", name)
+                if stat.S_ISLNK(info.external_attr >> 16):
+                    fail("ARCHIVE_SYMLINK", "Symlinks are not supported", name)
             indexes = [
                 name
                 for name in names
@@ -232,8 +241,6 @@ def verify_archive(path: Path) -> dict[str, Any]:
                         name,
                     )
                 info = archive.getinfo(name)
-                if stat.S_ISLNK(info.external_attr >> 16):
-                    fail("ARCHIVE_SYMLINK", "Symlinks are not supported", name)
                 if stat.S_IMODE(info.external_attr >> 16) != record["mode"]:
                     fail("ARCHIVE_MODE", "File permissions differ from inventory", name)
             return {

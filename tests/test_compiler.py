@@ -1,5 +1,6 @@
 import json
 import shutil
+import stat
 import zipfile
 import pytest
 from cox_protocol.cox_lib import CoxError, compile_project, validate_project
@@ -132,7 +133,33 @@ def test_package_excludes_env_and_explicit_transient(project, tmp_path):
 
 
 @pytest.mark.parametrize(
-    "mutation", ["tamper", "extra", "duplicate", "traversal", "manifest"]
+    "filename", ["invalid:name.txt", "back\\slash.txt", "CON.txt", "trailing."]
+)
+def test_package_rejects_nonportable_files_in_referenced_directory(
+    project, tmp_path, filename
+):
+    assets = project / "assets"
+    assets.mkdir()
+    (assets / filename).write_text("not portable")
+    change(project, "manifest.cox", lambda d: d.update(ToolingFiles=["assets"]))
+    out = tmp_path / "out"
+    with pytest.raises(CoxError) as exc:
+        compile_project(project, out, ["package"])
+    assert exc.value.issues[0].code == "PACKAGE_PATH"
+    assert not out.exists()
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "tamper",
+        "extra",
+        "duplicate",
+        "traversal",
+        "manifest",
+        "inventory_symlink",
+        "payload_symlink",
+    ],
 )
 def test_archive_tampering_is_rejected(project, tmp_path, mutation):
     compile_project(project, tmp_path / "out", ["all"])
@@ -147,6 +174,11 @@ def test_archive_tampering_is_rejected(project, tmp_path, mutation):
                 "/package.manifest.json"
             ):
                 data = b"{}"
+            if (
+                mutation == "inventory_symlink"
+                and info.filename.endswith("/package.manifest.json")
+            ) or (mutation == "payload_symlink" and index == 0):
+                info.external_attr = (stat.S_IFLNK | 0o644) << 16
             dest.writestr(info, data)
         if mutation == "extra":
             zip_write_bytes(dest, "cox_example/extra", b"extra")

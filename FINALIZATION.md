@@ -41,3 +41,10 @@ Completion requires checking every item above against the final current state. A
 Release 1.2.0 is prepared as local wheel, sdist, npm tarball and VSIX artifacts with a developer handoff, reproducible demo and checksums. This task has not published to npm, PyPI or the VS Code Marketplace. Registry publication and merging the review branch are separate release actions. Artifact checksums and the final source revision belong in the external handoff record so they cannot create self-referential archive hashes.
 
 The completed scope is the COX v1 design-contract toolchain. React remains typed structural scaffolding. Arbitrary prose rules, rendered UI checks, AST conformance, MCP integration and adoption claims are outside the implemented product. No Windows execution or visual editor interaction is claimed by this local verification. Two upstream Typer/Click deprecation warnings appeared on Python 3.12; all checks passed.
+
+## Pre-merge packaging review — 18 October 2026
+
+- Directory references now reject non-portable descendant filenames before publishing outputs, so compilation cannot emit an archive that its own path verifier rejects.
+- ZIP symlink checks now cover every entry, including the embedded inventory rather than only inventoried payload files.
+- Six added regression cases cover these paths and bring the suite to 64 tests. The existing CI matrix continues to require generated TypeScript, isolated installs and all four distribution formats for the revised source.
+- Registry publication remains a separate action and is outside this review.

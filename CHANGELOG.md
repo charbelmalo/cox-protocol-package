@@ -9,6 +9,7 @@
 - Preserve evidence in safely escaped React comments and validate generated scaffolds with TypeScript.
 - Stage builds before publication, track generated-file ownership, preserve unrelated files, refuse local-edit overwrites and remove only stale owned output.
 - Support external output directories and deterministic archives containing the current run's compiled manifest and reports; verify inventory hashes, sizes, paths and modes.
+- Reject non-portable filenames inside referenced source directories before packaging, and reject symlink metadata on every ZIP entry, including the inventory.
 - Add regression tests, clean-install release checks, CI and a reproducible failing/corrected contract demonstration.
 - Replace subjective readiness scores with explicit capability boundaries and verification evidence.
 
