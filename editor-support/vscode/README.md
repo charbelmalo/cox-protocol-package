@@ -24,7 +24,8 @@ COX Language Support adds syntax highlighting, editor configuration, and authori
 Create a local VSIX package from this folder:
 
 ```bash
-vsce package --out ../../build/vscode/cox-language-support-1.1.0.vsix
+npm ci --prefix ../..
+npm run package
 ```
 
 ## Notes

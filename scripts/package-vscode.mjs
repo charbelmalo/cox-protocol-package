@@ -1,0 +1,12 @@
+import { mkdirSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const extension = path.join(root, 'editor-support/vscode');
+const version = JSON.parse(readFileSync(path.join(extension, 'package.json'), 'utf8')).version;
+const destination = process.argv[2] ? path.resolve(process.argv[2]) : path.join(root, 'build/vscode', `cox-language-support-${version}.vsix`);
+mkdirSync(path.dirname(destination), { recursive: true });
+const result = spawnSync(process.execPath, [path.join(root, 'node_modules/@vscode/vsce/vsce'), 'package', '--no-dependencies', '--out', destination], { cwd: extension, stdio: 'inherit' });
+if (result.error) console.error(result.error.message);
+process.exit(result.status ?? 1);

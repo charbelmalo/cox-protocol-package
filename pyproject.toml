@@ -1,14 +1,15 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "cox-protocol-package"
-version = "1.0.1"
+version = "1.2.0"
 description = "Validator and compiler for COX design-spec documents"
 readme = "README.md"
 requires-python = ">=3.9"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
   { name = "Charbel Malo" },
 ]
@@ -24,7 +25,6 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Environment :: Console",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -41,7 +41,7 @@ dependencies = [
 ]
 
 [project.scripts]
-cox = "tools.cox_cli:app"
+cox = "cox_protocol.cox_cli:app"
 
 [project.urls]
 Homepage = "https://github.com/charbelmalo/cox-protocol-package#readme"
@@ -49,4 +49,15 @@ Repository = "https://github.com/charbelmalo/cox-protocol-package"
 Issues = "https://github.com/charbelmalo/cox-protocol-package/issues"
 
 [tool.setuptools]
-packages = ["tools"]
+packages = ["cox_protocol"]
+include-package-data = false
+
+[tool.setuptools.package-data]
+cox_protocol = ["schemas/*.json", "starter/*", "starter/page/*", "starter/page/action_button/*"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "build>=1.0", "twine>=5.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

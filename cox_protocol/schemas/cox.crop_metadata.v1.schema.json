@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cox.crop_metadata.v1",
+  "title": "COX Crop Metadata",
+  "type": "object",
+  "required": [
+    "CoxVersion",
+    "FileType",
+    "Slug",
+    "Schema",
+    "SourceScreenshot",
+    "OutputScreenshot",
+    "BoundaryConfidence",
+    "EstimatedBoundingBox"
+  ],
+  "properties": {
+    "CoxVersion": {
+      "const": "1.0"
+    },
+    "FileType": {
+      "const": "crop_metadata"
+    },
+    "Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+    },
+    "Schema": {
+      "const": "cox.crop_metadata.v1"
+    },
+    "SourceScreenshot": {
+      "type": "string"
+    },
+    "OutputScreenshot": {
+      "type": "string"
+    },
+    "BoundaryConfidence": {
+      "type": "string",
+      "enum": [
+        "High",
+        "Medium",
+        "Low"
+      ]
+    },
+    "EstimatedBoundingBox": {
+      "type": "object",
+      "required": [
+        "Unit",
+        "X",
+        "Y",
+        "Width",
+        "Height"
+      ],
+      "properties": {
+        "Unit": {
+          "type": "string"
+        },
+        "X": {
+          "type": "string"
+        },
+        "Y": {
+          "type": "string"
+        },
+        "Width": {
+          "type": "string"
+        },
+        "Height": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "IncludedPaddingReason": {
+      "type": "string"
+    },
+    "ExcludedRegions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -10,11 +10,12 @@ Encoding: "UTF-8"
 SyntaxBase: "YAML-compatible structured text"
 EntryPoint: "manifest.cox"
 ReferenceDocs:
+  - "CHANGELOG.md"
+  - "FINALIZATION.md"
   - "README.md"
   - "COX_FILE_FORMAT_SPECIFICATION_v1.0.md"
-  - "verification_report.txt"
-  - "zip_content_listing.txt"
 GuideDocs:
+  - "guides/contract-demo.md"
   - "guides/imported-packages/cox_protocol_package_compiled.md"
   - "guides/npm-installation.md"
 ProtocolDocs:
@@ -43,9 +44,11 @@ Schemas:
   - "schemas/cox.protocol.v1.schema.json"
   - "schemas/cox.crop_metadata.v1.schema.json"
 ToolingFiles:
+  - "cox_protocol"
+  - "scripts"
+  - "tests"
+  - "MANIFEST.in"
   - "LICENSE"
-  - ".gitignore"
-  - ".npmignore"
   - "package.json"
   - "bin/cox-protocol.js"
   - "pyproject.toml"

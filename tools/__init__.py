@@ -1,3 +1,3 @@
-__all__ = ["__version__"]
+from cox_protocol import __version__
 
-__version__ = "1.0.1"
+__all__ = ["__version__"]

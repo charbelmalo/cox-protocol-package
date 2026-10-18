@@ -1,0 +1,63 @@
+name: Validate and package COX
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: '3.9'
+            node: '22'
+          - python: '3.12'
+            node: '22'
+          - python: '3.14'
+            node: '24'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: python -m pip install -e '.[dev]'
+      - run: npm ci
+      - run: python -m pytest
+        env:
+          COX_REQUIRE_TYPESCRIPT: '1'
+      - run: python scripts/release_check.py
+      - run: python scripts/demo.py --out build/demo
+      - run: python -m build
+      - name: Install and check wheel away from checkout
+        run: |
+          python -m venv /tmp/cox-wheel
+          /tmp/cox-wheel/bin/python -m pip install dist/*.whl
+          python scripts/release_check.py --python /tmp/cox-wheel/bin/python
+      - name: Install and check source distribution
+        run: |
+          python -m venv /tmp/cox-sdist
+          /tmp/cox-sdist/bin/python -m pip install dist/*.tar.gz
+          python scripts/release_check.py --python /tmp/cox-sdist/bin/python
+      - name: Install and check npm tarball
+        run: |
+          npm pack --pack-destination dist
+          npm install --prefix /tmp/cox-npm "$PWD"/dist/*.tgz
+          python scripts/release_check.py --python /tmp/cox-wheel/bin/python --node-cli /tmp/cox-npm/node_modules/cox-protocol-package/bin/cox-protocol.js
+          COX_PYTHON=/tmp/cox-wheel/bin/python /tmp/cox-npm/node_modules/.bin/cox-protocol validate /tmp/cox-npm/node_modules/cox-protocol-package --strict
+      - run: npm run package:vscode
+      - run: python scripts/check_distribution.py --dist dist --vsix build/vscode/cox-language-support-1.2.0.vsix
+      - run: python -m twine check dist/*.whl dist/*.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cox-${{ matrix.python }}-node-${{ matrix.node }}
+          path: |
+            dist/
+            build/vscode/*.vsix
+            build/demo/

@@ -1,0 +1,20 @@
+include LICENSE README.md CHANGELOG.md COX_FILE_FORMAT_SPECIFICATION_v1.0.md
+recursive-include cox_protocol/schemas *.json
+recursive-include cox_protocol/starter *
+recursive-include tests *.py
+global-exclude *.py[cod]
+global-exclude __pycache__
+include FINALIZATION.md
+recursive-include scripts *.py *.mjs
+recursive-include schemas *.json
+recursive-include examples *
+recursive-include guides *.md
+include manifest.cox package.json package-lock.json requirements.txt
+recursive-include LocalAppManager *
+recursive-include protocols *.cox
+recursive-include templates *
+recursive-include skills *
+recursive-include editor-support *
+recursive-include bin *.js
+prune editor-support/vscode/node_modules
+recursive-include tools *.py

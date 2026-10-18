@@ -1,6 +1,6 @@
 {
   "name": "cox-protocol-package",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "description": "NPM wrapper and distribution package for the COX protocol CLI.",
   "license": "MIT",
   "type": "module",
@@ -9,22 +9,32 @@
   },
   "files": [
     "bin",
-    "COX_FILE_FORMAT_SPECIFICATION_v1.0.md",
-    "LICENSE",
-    "README.md",
-    "editor-support/vscode",
-    "guides",
-    "manifest.cox",
+    "cox_protocol",
+    "tools",
+    "schemas",
     "protocols",
+    "templates",
+    "examples",
+    "guides",
+    "skills",
+    "editor-support/vscode",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "COX_FILE_FORMAT_SPECIFICATION_v1.0.md",
+    "manifest.cox",
+    "LocalAppManager",
     "pyproject.toml",
     "requirements.txt",
-    "schemas",
-    "skills",
-    "templates",
-    "tools",
+    "FINALIZATION.md",
+    "scripts",
+    "tests",
+    "MANIFEST.in",
     "!**/__pycache__/**",
     "!**/*.pyc",
-    "!**/*.pyo"
+    "!**/.cox-build.json",
+    "!**/node_modules/**",
+    "!**/build/**"
   ],
   "keywords": [
     "cox",
@@ -43,11 +53,17 @@
     "url": "https://github.com/charbelmalo/cox-protocol-package/issues"
   },
   "scripts": {
+    "test": "python3 -m pytest",
     "pack:dry-run": "npm pack --dry-run",
-    "package:vscode": "cd editor-support/vscode && npm run package",
-    "smoke:python": "cox validate . && cox compile . --target json --target react --target package --out build"
+    "package:vscode": "npm --prefix editor-support/vscode run package",
+    "smoke:python": "python3 scripts/release_check.py"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@vscode/vsce": "4.0.0",
+    "typescript": "7.0.2"
   }
 }
